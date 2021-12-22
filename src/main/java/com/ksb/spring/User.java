@@ -1,3 +1,5 @@
+package com.ksb.spring;
+
 public class User {
     String id;
     String name;
