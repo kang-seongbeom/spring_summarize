@@ -3,8 +3,14 @@ package com.ksb.spring;
 import java.sql.*;
 
 public class UserDao {
+    private ConnectionMaker connectionMaker;
+
+    public UserDao(ConnectionMaker connectionMaker){
+        this.connectionMaker = connectionMaker;
+    }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.getConnection();
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) value (?,?,?)"
         );
@@ -17,7 +23,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = connectionMaker.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?"
@@ -35,13 +41,5 @@ public class UserDao {
         ps.close();
         c.close();
         return user;
-    }
-
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost/toby?serverTimezone=UTC"
-                , "root", "1234"
-        );
     }
 }
