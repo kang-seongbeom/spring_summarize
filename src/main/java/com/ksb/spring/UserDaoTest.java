@@ -1,10 +1,17 @@
 package com.ksb.spring;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.sql.SQLException;
 
 public class UserDaoTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new DaoFactory().userDao();
+
+        //UserDao dao = new DaoFactory().userDao();
+        ApplicationContext applicationContext =
+                new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = applicationContext.getBean("userDao", UserDao.class);
 
         User user = new User();
         user.setId("ksb 1");

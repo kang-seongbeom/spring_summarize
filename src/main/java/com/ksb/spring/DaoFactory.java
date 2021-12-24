@@ -1,21 +1,20 @@
 package com.ksb.spring;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import java.sql.SQLException;
 
+@Configuration
 public class DaoFactory {
-    public UserDao userDao() throws SQLException, ClassNotFoundException {
+
+    @Bean
+    public UserDao userDao() {
         return new UserDao(connectionMaker());
     }
 
-    public UserDao accountDao() throws SQLException, ClassNotFoundException {
-        return new UserDao(connectionMaker());
-    }
-
-    public UserDao messageDao() throws SQLException, ClassNotFoundException {
-        return new UserDao(connectionMaker());
-    }
-
-    private DConnectionMaker connectionMaker() {
+    @Bean
+    public DConnectionMaker connectionMaker() {
         return new DConnectionMaker();
     }
 }
