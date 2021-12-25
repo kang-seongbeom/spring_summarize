@@ -9,9 +9,13 @@ public class UserDaoTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         //UserDao dao = new DaoFactory().userDao();
-        ApplicationContext applicationContext =
+        AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = applicationContext.getBean("userDao", UserDao.class);
+
+//        CountingConnectionMaker ccm = applicationContext.getBean("connectionMaker",
+//                CountingConnectionMaker.class);
+//        System.out.println(ccm.getCnt());
 
         User user = new User();
         user.setId("ksb 1");
