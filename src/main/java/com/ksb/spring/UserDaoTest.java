@@ -2,6 +2,7 @@ package com.ksb.spring;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.SQLException;
 
@@ -9,8 +10,8 @@ public class UserDaoTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         //UserDao dao = new DaoFactory().userDao();
-        AnnotationConfigApplicationContext applicationContext =
-                new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext applicationContext =
+                new GenericXmlApplicationContext("applicationContext.xml");
         UserDao dao = applicationContext.getBean("userDao", UserDao.class);
 
 //        CountingConnectionMaker ccm = applicationContext.getBean("connectionMaker",
