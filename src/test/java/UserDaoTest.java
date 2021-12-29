@@ -1,11 +1,11 @@
-package com.ksb.spring;
-
-import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import com.ksb.spring.User;
+import com.ksb.spring.UserDao;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import java.sql.SQLException;
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class UserDaoTest {
 
