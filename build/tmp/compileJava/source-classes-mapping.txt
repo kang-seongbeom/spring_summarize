@@ -2,17 +2,17 @@ com/ksb/spring/Main.java
  com.ksb.spring.Main
 com/ksb/spring/ConnectionMaker.java
  com.ksb.spring.ConnectionMaker
-com/ksb/spring/DaoFactory.java
- com.ksb.spring.DaoFactory
+com/ksb/spring/CountingConnectionMaker.java
+ com.ksb.spring.CountingConnectionMaker
 com/ksb/spring/NConnectionMaker.java
  com.ksb.spring.NConnectionMaker
 com/ksb/spring/DConnectionMaker.java
  com.ksb.spring.DConnectionMaker
-com/ksb/spring/CountingConnectionMaker.java
- com.ksb.spring.CountingConnectionMaker
+com/ksb/spring/User.java
+ com.ksb.spring.User
+com/ksb/spring/DaoFactory.java
+ com.ksb.spring.DaoFactory
 com/ksb/spring/UserDao.java
  com.ksb.spring.UserDao
 com/ksb/spring/UserDaoTest.java
  com.ksb.spring.UserDaoTest
-com/ksb/spring/User.java
- com.ksb.spring.User
