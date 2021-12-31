@@ -20,6 +20,8 @@ ext {
 dependencies {
     implementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.1'
+    // https://mvnrepository.com/artifact/org.springframework/spring-test
+    testImplementation group: 'org.springframework', name: 'spring-test', version: '5.3.9'
 
     runtimeOnly 'mysql:mysql-connector-java:8.0.19'
 
