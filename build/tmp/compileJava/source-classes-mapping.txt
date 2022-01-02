@@ -10,9 +10,11 @@ com/ksb/spring/DConnectionMaker.java
  com.ksb.spring.DConnectionMaker
 com/ksb/spring/User.java
  com.ksb.spring.User
+com/ksb/spring/DeleteAllStatement.java
+ com.ksb.spring.DeleteAllStatement
 com/ksb/spring/DaoFactory.java
  com.ksb.spring.DaoFactory
 com/ksb/spring/UserDao.java
  com.ksb.spring.UserDao
-com/ksb/spring/UserDaoTest.java
- com.ksb.spring.UserDaoTest
+com/ksb/spring/StatementStrategy.java
+ com.ksb.spring.StatementStrategy

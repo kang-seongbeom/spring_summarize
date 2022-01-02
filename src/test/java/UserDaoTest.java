@@ -1,17 +1,13 @@
+import com.ksb.spring.DeleteAllStatement;
+import com.ksb.spring.StatementStrategy;
 import com.ksb.spring.User;
 import com.ksb.spring.UserDao;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+
 import java.sql.SQLException;
 import org.junit.Test;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
 
@@ -25,6 +21,8 @@ public class UserDaoTest {
     private User user3;
 
     UserDao dao;
+
+    StatementStrategy st;
 
     @Before
     public void setUp(){
@@ -40,11 +38,13 @@ public class UserDaoTest {
         this.user1 = new User("k1", "k1", "k1");
         this.user2 = new User("k2", "k2", "k2");
         this.user3 = new User("k3", "k3", "k3");
+
+        st = new DeleteAllStatement();
     }
 
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
-        dao.deleteAll();
+        dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(0));
 
         dao.add(user1);
@@ -62,7 +62,7 @@ public class UserDaoTest {
 
     @Test
     public void count() throws SQLException, ClassNotFoundException {
-        dao.deleteAll();
+        dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(0));
 
         dao.add(user1);
@@ -76,8 +76,8 @@ public class UserDaoTest {
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
-    public void getUserFailure() throws SQLException, ClassNotFoundException {
-        dao.deleteAll();
+    public void getUserFailure() throws SQLException {
+        dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(0));
 
         dao.get("unknown_id");
