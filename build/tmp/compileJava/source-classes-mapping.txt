@@ -16,6 +16,8 @@ com/ksb/spring/AddStatement.java
  com.ksb.spring.AddStatement
 com/ksb/spring/StatementStrategy.java
  com.ksb.spring.StatementStrategy
+com/ksb/spring/JdbcContext.java
+ com.ksb.spring.JdbcContext
 com/ksb/spring/DaoFactory.java
  com.ksb.spring.DaoFactory
 com/ksb/spring/UserDao.java

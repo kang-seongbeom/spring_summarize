@@ -1,40 +1,32 @@
-import com.ksb.spring.*;
+import com.ksb.spring.User;
+import com.ksb.spring.UserDao;
 import org.junit.Before;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.sql.DataSource;
+import java.sql.SQLException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class UserDaoTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.xml")
+public class UserDaoTestJdbc {
 
     private final User user1= new User("k1", "k1", "k1");
     private final User user2 = new User("k2", "k2", "k2");
     private final User user3 = new User("k3", "k3", "k3");
 
+    @Autowired
     UserDao dao;
 
     @Before
     public void setUp(){
-        dao = new UserDao();
-        DataSource dataSource = new SingleConnectionDataSource(
-                "jdbc:mysql://localhost/toby?serverTimezone=UTC",
-                "root",
-                "1234",
-                true
-        );
-        dao.setDataSource(dataSource);
+
     }
 
     @Test
