@@ -22,37 +22,27 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws SQLException {
-        PreparedStatement ps = null;
-        Connection c = null;
+    public void add(final User user) throws SQLException {
+        jdbcContextWithStatementStrategy(new StatementStrategy() {
+            public PreparedStatement makePrepareStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement(
+                        "insert into users(id, name, password) value (?,?,?)"
+                );
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword());
+                return ps;
+            }
+        });
+    }
 
-        try {
-            c = dataSource.getConnection();
-            ps = c.prepareStatement(
-                    "insert into users(id, name, password) value (?,?,?)"
-            );
-            ps.setString(1, user.getId());
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getPassword());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+    public void deleteAll() throws SQLException{
+        jdbcContextWithStatementStrategy(new StatementStrategy() {
+            public PreparedStatement makePrepareStatement(Connection c) throws SQLException {
+                return c.prepareStatement("delete from users");
+
             }
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        });
     }
 
     public User get(String id) throws SQLException {

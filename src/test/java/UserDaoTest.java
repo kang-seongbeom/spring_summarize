@@ -1,9 +1,8 @@
-import com.ksb.spring.DeleteAllStatement;
-import com.ksb.spring.StatementStrategy;
-import com.ksb.spring.User;
-import com.ksb.spring.UserDao;
+import com.ksb.spring.*;
 import org.junit.Before;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,9 +15,9 @@ import static org.junit.Assert.assertThat;
 
 public class UserDaoTest {
 
-    private User user1;
-    private User user2;
-    private User user3;
+    private final User user1= new User("k1", "k1", "k1");
+    private final User user2 = new User("k2", "k2", "k2");
+    private final User user3 = new User("k3", "k3", "k3");
 
     UserDao dao;
 
@@ -34,20 +33,16 @@ public class UserDaoTest {
                 true
         );
         dao.setDataSource(dataSource);
-
-        this.user1 = new User("k1", "k1", "k1");
-        this.user2 = new User("k2", "k2", "k2");
-        this.user3 = new User("k3", "k3", "k3");
-
-        st = new DeleteAllStatement();
     }
 
     @Test
-    public void addAndGet() throws SQLException, ClassNotFoundException {
-        dao.jdbcContextWithStatementStrategy(st);
+    public void addAndGet() throws SQLException {
+        dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
         dao.add(user1);
+        assertThat(dao.getCount(), is(1));
+
         dao.add(user2);
         assertThat(dao.getCount(), is(2));
 
@@ -62,21 +57,24 @@ public class UserDaoTest {
 
     @Test
     public void count() throws SQLException, ClassNotFoundException {
-        dao.jdbcContextWithStatementStrategy(st);
+        dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
         dao.add(user1);
         assertThat(dao.getCount(), is(1));
 
-        dao.add(user2);
+        st = new AddStatement(user2);
+        dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(2));
 
-        dao.add(user3);
+        st = new AddStatement(user3);
+        dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(3));
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException {
+        st = new DeleteAllStatement();
         dao.jdbcContextWithStatementStrategy(st);
         assertThat(dao.getCount(), is(0));
 
