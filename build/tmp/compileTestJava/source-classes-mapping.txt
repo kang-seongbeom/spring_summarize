@@ -1,8 +1,8 @@
 JUnitTest.java
  JUnitTest
+CalcSumTest.java
+ CalcSumTest
 UserDaoTest.java
  UserDaoTest
 UserDaoTestJdbc.java
  UserDaoTestJdbc
-CalcSumTest.java
- CalcSumTest
