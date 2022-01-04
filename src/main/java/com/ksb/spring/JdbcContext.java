@@ -8,8 +8,19 @@ import java.sql.SQLException;
 public class JdbcContext {
     private DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void executeSql(final String query, final String... str) throws SQLException {
+        workWithStatementStrategy(new StatementStrategy() {
+            public PreparedStatement makePrepareStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement(query);
+                for (int i = 0; i < str.length; i++)
+                    ps.setString(i + 1, str[i]);
+                return ps;
+            }
+        });
     }
 
     public void workWithStatementStrategy(StatementStrategy stmt) throws SQLException {

@@ -19,9 +19,9 @@ import static org.junit.Assert.assertThat;
 
 public class UserDaoTest {
 
-    private final User user1= new User("k1", "k1", "k1");
-    private final User user2 = new User("k2", "k2", "k2");
-    private final User user3 = new User("k3", "k3", "k3");
+    private final User user1= new User("k1", "k1n", "k1p");
+    private final User user2 = new User("k2", "k2n", "k2p");
+    private final User user3 = new User("k3", "k3n", "k3p");
 
     UserDao dao;
 
