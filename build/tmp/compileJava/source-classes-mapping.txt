@@ -26,8 +26,12 @@ com/ksb/spring/Calculator.java
  com.ksb.spring.Calculator$1
  com.ksb.spring.Calculator$2
  com.ksb.spring.Calculator$3
+com/ksb/spring/DuplicateUserIdException.java
+ com.ksb.spring.DuplicateUserIdException
 com/ksb/spring/DaoFactory.java
  com.ksb.spring.DaoFactory
 com/ksb/spring/UserDao.java
  com.ksb.spring.UserDao
- com.ksb.spring.UserDao$1
+com/ksb/spring/UserDaoJdbc.java
+ com.ksb.spring.UserDaoJdbc
+ com.ksb.spring.UserDaoJdbc$1

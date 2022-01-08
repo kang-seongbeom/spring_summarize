@@ -77,14 +77,14 @@ public UserDao userDao() {
 }
 
 //id = userDao()
-//class = com.ksb.spring.UserDao
+//class = com.ksb.spring.UserDaoJdbc
 //property = set
 //name = ConnectionMaker
 /*
 ref = connectionMaker()의 bean id
 <bean id="connectionMaker" class="com.ksb.spring.DConnectionMaker"></bean>
 */
-<bean id="userDao" class="com.ksb.spring.UserDao">
+<bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
 	<property name="connectionMaker" ref="connectionMaker">
 </bean>
 ```
@@ -100,7 +100,7 @@ ref = connectionMaker()의 bean id
 //예시
 <beans>
 	<bean id="myConnectionMaker" class="com.ksb.spring.DConnectionMaker"></bean>
-	<bean id="userDao" class="com.ksb.spring.UserDao">
+	<bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
 		<property name="connectionMaker" ref="myConnectionMaker">
 	</bean>
 <beans/>
@@ -115,7 +115,7 @@ ref = connectionMaker()의 bean id
 	<bean id="my2ConnectionMaker" class="com.ksb.spring.NConnectionMaker"></bean>
 	<bean id="my3ConnectionMaker" class="com.ksb.spring.GConnectionMaker"></bean>
 
-	<bean id="userDao" class="com.ksb.spring.UserDao">
+	<bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
 		<property name="connectionMaker" ref="my1ConnectionMaker">
 	</bean>
 <beans/>
@@ -171,7 +171,7 @@ ref = connectionMaker()의 bean id
                                 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     
         <bean id="connectionMaker" class="com.ksb.spring.DConnectionMaker"></bean>
-        <bean id="userDao" class="com.ksb.spring.UserDao">
+        <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
             <property name="connectionMaker" ref="connectionMaker"></property>
         </bean>
     </beans>
@@ -267,7 +267,7 @@ dataSource.setPassword("1234");
             <property name="username" value="root"/>
             <property name="password" value="1234"/>
         </bean>
-        <bean id="userDao" class="com.ksb.spring.UserDao">
+        <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
             <property name="dataSource" ref="dataSource"/>
         </bean>
     </beans>

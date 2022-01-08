@@ -1,18 +1,13 @@
 import com.ksb.spring.*;
 import org.junit.Before;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
 
@@ -25,11 +20,11 @@ public class UserDaoTest {
     private final User user2 = new User("leegw700", "k2n", "k2p");
     private final User user3 = new User("bumjin", "k3n", "k3p");
 
-    UserDao dao;
+    UserDaoJdbc dao;
 
     @Before
     public void setUp(){
-        dao = new UserDao();
+        dao = new UserDaoJdbc();
         DataSource dataSource = new SingleConnectionDataSource(
                 "jdbc:mysql://localhost/toby?serverTimezone=UTC",
                 "root",
@@ -116,5 +111,13 @@ public class UserDaoTest {
         assertThat(pUser1.getId(), is(pUser2.getId()));
         assertThat(pUser1.getName(), is(pUser2.getName()));
         assertThat(pUser1.getPassword(), is(pUser2.getPassword()));
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void duplicateKey(){
+        dao.deleteAll();
+
+        dao.add(user1);
+        dao.add(user1);
     }
 }

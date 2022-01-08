@@ -6,7 +6,7 @@
 
     <bean id="connectionMaker" class="com.ksb.spring.DConnectionMaker"></bean>
 
-    <bean id="userDao" class="com.ksb.spring.UserDao">
+    <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
 <!--        <property name="connectionMaker" ref="connectionMaker"></property>-->
         <property name="dataSource" ref="dataSource"/>
 <!--        <property name="jdbcContext" ref="jdbcContext"/>-->
