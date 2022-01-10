@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
-public class UserDaoJdbc implements UserDao{
+public class UserDaoJdbc implements UserDao {
 
     private RowMapper<User> userMapper =
             new RowMapper<User>() {
@@ -22,6 +22,9 @@ public class UserDaoJdbc implements UserDao{
                     user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setPassword(rs.getString("password"));
+                    user.setLevel(Level.valueOf(rs.getInt("level")));
+                    user.setLogin(rs.getInt("login"));
+                    user.setRecommend(rs.getInt("recommend"));
                     return user;
                 }
             };
@@ -36,8 +39,13 @@ public class UserDaoJdbc implements UserDao{
         String id = user.getId();
         String name = user.getName();
         String password = user.getPassword();
-        String query = "insert into users(id, name, password) value (?,?,?)";
-        this.jdbcTemplate.update(query, id, name, password);
+        int level = user.getLevel().intValue();
+        int login = user.getLogin();
+        int recommend = user.getRecommend();
+        String query = "insert into users(id, name, password, " +
+                "level, login, recommend) value (?,?,?,?,?,?)";
+        this.jdbcTemplate.update(query, id, name, password,
+                level, login, recommend);
     }
 
     public void deleteAll() {
@@ -59,5 +67,18 @@ public class UserDaoJdbc implements UserDao{
     public int getCount() {
         String query = "select count(*) from users";
         return this.jdbcTemplate.queryForObject(query, Integer.class);
+    }
+
+    public void update(User user1) {
+        String query = "update users set name=?, password=?, level=?, " +
+                "login=?, recommend=? where id=?";
+        String id = user1.getId();
+        String name = user1.getName();
+        String password = user1.getPassword();
+        int level = user1.getLevel().intValue();
+        int login = user1.getLogin();
+        int recommend = user1.getRecommend();
+        this.jdbcTemplate.update(query, name, password,
+                level, login, recommend, id);
     }
 }

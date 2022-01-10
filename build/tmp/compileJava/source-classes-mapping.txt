@@ -2,23 +2,15 @@ com/ksb/spring/Main.java
  com.ksb.spring.Main
 com/ksb/spring/ConnectionMaker.java
  com.ksb.spring.ConnectionMaker
-com/ksb/spring/CountingConnectionMaker.java
- com.ksb.spring.CountingConnectionMaker
+com/ksb/spring/JdbcContext.java
+ com.ksb.spring.JdbcContext
+ com.ksb.spring.JdbcContext$1
 com/ksb/spring/NConnectionMaker.java
  com.ksb.spring.NConnectionMaker
 com/ksb/spring/DConnectionMaker.java
  com.ksb.spring.DConnectionMaker
-com/ksb/spring/User.java
- com.ksb.spring.User
-com/ksb/spring/DeleteAllStatement.java
- com.ksb.spring.DeleteAllStatement
-com/ksb/spring/AddStatement.java
- com.ksb.spring.AddStatement
-com/ksb/spring/StatementStrategy.java
- com.ksb.spring.StatementStrategy
-com/ksb/spring/JdbcContext.java
- com.ksb.spring.JdbcContext
- com.ksb.spring.JdbcContext$1
+com/ksb/spring/DuplicateUserIdException.java
+ com.ksb.spring.DuplicateUserIdException
 com/ksb/spring/LineCallback.java
  com.ksb.spring.LineCallback
 com/ksb/spring/Calculator.java
@@ -26,12 +18,19 @@ com/ksb/spring/Calculator.java
  com.ksb.spring.Calculator$1
  com.ksb.spring.Calculator$2
  com.ksb.spring.Calculator$3
-com/ksb/spring/DuplicateUserIdException.java
- com.ksb.spring.DuplicateUserIdException
-com/ksb/spring/DaoFactory.java
- com.ksb.spring.DaoFactory
-com/ksb/spring/UserDao.java
- com.ksb.spring.UserDao
+com/ksb/spring/StatementStrategy.java
+ com.ksb.spring.StatementStrategy
 com/ksb/spring/UserDaoJdbc.java
  com.ksb.spring.UserDaoJdbc
  com.ksb.spring.UserDaoJdbc$1
+com/ksb/spring/DaoFactory.java
+ com.ksb.spring.DaoFactory
+com/ksb/spring/Level.java
+ com.ksb.spring.Level
+com/ksb/spring/UserDao.java
+ com.ksb.spring.UserDao
+com/ksb/spring/User.java
+ com.ksb.spring.User
+com/ksb/spring/UserService.java
+ com.ksb.spring.UserService
+ com.ksb.spring.UserService$1

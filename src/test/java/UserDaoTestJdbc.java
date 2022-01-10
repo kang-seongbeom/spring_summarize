@@ -81,21 +81,21 @@ public class UserDaoTestJdbc {
         dao.get("unknown_id");
     }
 
-    @Test
-    public void sqlExceptionTranslate() {
-        dao.deleteAll();
-
-        dao.add(user1);
-        dao.add(user1);
-        try {
-            dao.add(user1);
-            dao.add(user1);
-        } catch (DuplicateKeyException ex) {
-            SQLException sqlEx = (SQLException) ex.getRootCause();
-            SQLExceptionTranslator set =
-                    new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
-            assertThat(set.translate(null, null, sqlEx),
-                    is(DuplicateKeyException.class));
-        }
-    }
+//    @Test
+//    public void sqlExceptionTranslate() {
+//        dao.deleteAll();
+//
+//        dao.add(user1);
+//        dao.add(user1);
+//        try {
+//            dao.add(user1);
+//            dao.add(user1);
+//        } catch (DuplicateKeyException ex) {
+//            SQLException sqlEx = (SQLException) ex.getRootCause();
+//            SQLExceptionTranslator set =
+//                    new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
+//            assertThat(set.translate(null, null, sqlEx),
+//                    is(DuplicateKeyException.class));
+//        }
+//    }
 }

@@ -6,3 +6,7 @@ UserDaoTest.java
  UserDaoTest
 UserDaoTestJdbc.java
  UserDaoTestJdbc
+UserTest.java
+ UserTest
+UserServiceTest.java
+ UserServiceTest

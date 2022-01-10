@@ -4,17 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="connectionMaker" class="com.ksb.spring.DConnectionMaker"></bean>
-
-    <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
-<!--        <property name="connectionMaker" ref="connectionMaker"></property>-->
-        <property name="dataSource" ref="dataSource"/>
-<!--        <property name="jdbcContext" ref="jdbcContext"/>-->
+    <bean id="userService" class="com.ksb.spring.UserService">
+        <property name="userDao" ref="userDao"/>
     </bean>
-
-<!--    <bean id="jdbcContext" class="com.ksb.spring.JdbcContext">-->
-<!--        <property name="dataSource" ref="dataSource"/>-->
-<!--    </bean>-->
+    <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
