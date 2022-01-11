@@ -8,13 +8,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import static com.ksb.spring.UserService.MIN_LOG_COUNT_FOR_SILVER;
 import static com.ksb.spring.UserService.MIN_RECOMMEND_FOR_GOLD;
@@ -27,6 +31,9 @@ public class UserServiceTest {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     List<User> users;
 
@@ -90,5 +97,24 @@ public class UserServiceTest {
 
         assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
         assertThat(userWithoutLevelRead.getLevel(), is(userWithoutLevel.getLevel()));
+    }
+
+    @Test
+    public void upgradeAllOrNothing() {
+        UserService testUserService =
+                new UserService.TestUserService(users.get(3).getId());
+        testUserService.setUserDao(this.userDao);
+        testUserService.setTransactionManager(this.transactionManager);
+
+        userDao.deleteAll();
+        for(User user : users) userDao.add(user);
+
+        try {
+            testUserService.upgradeLevels();
+            fail("TestUserServiceException expected");
+        } catch (UserService.TestUserServiceException e){
+        }
+
+        checkLevelUpgraded(users.get(1), false);
     }
 }

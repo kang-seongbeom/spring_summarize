@@ -6,7 +6,14 @@
 
     <bean id="userService" class="com.ksb.spring.UserService">
         <property name="userDao" ref="userDao"/>
+        <property name="transactionManager" ref="transactionManager" />
     </bean>
+
+    <bean id ="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="userDao" class="com.ksb.spring.UserDaoJdbc">
         <property name="dataSource" ref="dataSource"/>
     </bean>
