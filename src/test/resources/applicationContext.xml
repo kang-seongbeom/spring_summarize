@@ -7,6 +7,12 @@
     <bean id="userService" class="com.ksb.spring.UserService">
         <property name="userDao" ref="userDao"/>
         <property name="transactionManager" ref="transactionManager" />
+        <property name="mailSender" ref="mailSender"/>
+    </bean>
+
+    <bean id="mailSender"
+          class="com.ksb.spring.DummyMailSender">
+        <property name="host" value="mail.server.com"/>
     </bean>
 
     <bean id ="transactionManager"

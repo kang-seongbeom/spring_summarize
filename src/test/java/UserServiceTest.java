@@ -1,11 +1,10 @@
-import com.ksb.spring.Level;
-import com.ksb.spring.User;
-import com.ksb.spring.UserDao;
-import com.ksb.spring.UserService;
+import com.ksb.spring.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -35,6 +34,9 @@ public class UserServiceTest {
     @Autowired
     PlatformTransactionManager transactionManager;
 
+    @Autowired
+    MailSender mailSender;
+
     List<User> users;
 
     @Before
@@ -59,9 +61,13 @@ public class UserServiceTest {
     }
 
     @Test
+    //@DirtiesContext //DI 설정을 변경한다고 알림
     public void upgradeLevels() {
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
+
+//        MockMailSender mockMailSender = new MockMailSender();
+//        userService.setMailSender(mockMailSender);
 
         userService.upgradeLevels();
 
@@ -70,6 +76,11 @@ public class UserServiceTest {
         checkLevelUpgraded(users.get(2), false);
         checkLevelUpgraded(users.get(3), true);
         checkLevelUpgraded(users.get(4), false);
+
+        //List<String> request = mockMailSender.getRequests();
+        //assertThat(request.size(), is(2)); //2,4이 업그레이드 이므로 총 2번
+        //assertThat(request.get(0), is(users.get(1).getEmail()));
+        //assertThat(request.get(0), is(users.get(1).getEmail()));
     }
 
     private void checkLevelUpgraded(User user, boolean upgraded) {
@@ -105,6 +116,7 @@ public class UserServiceTest {
                 new UserService.TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
         testUserService.setTransactionManager(this.transactionManager);
+        testUserService.setMailSender(this.mailSender);
 
         userDao.deleteAll();
         for(User user : users) userDao.add(user);
