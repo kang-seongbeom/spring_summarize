@@ -34,8 +34,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/spring-context-support
     implementation group: 'org.springframework', name: 'spring-context-support', version: '3.0.7.RELEASE'
     // https://mvnrepository.com/artifact/javax.activation/com.springsource.javax.activation
-    compileOnly group: 'javax.activation', name: 'com.springsource.javax.activation', version: '1.1.0'
-
+    compileOnly group: 'javax.activation', name: 'com.springsource.javax.activation', version: '1.1.1'
 }
 
 test {
