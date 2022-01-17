@@ -1,12 +1,12 @@
+UserTest.java
+ UserTest
 JUnitTest.java
  JUnitTest
-CalcSumTest.java
- CalcSumTest
 UserDaoTest.java
  UserDaoTest
 UserDaoTestJdbc.java
  UserDaoTestJdbc
-UserTest.java
- UserTest
+CalcSumTest.java
+ CalcSumTest
 UserServiceTest.java
  UserServiceTest
