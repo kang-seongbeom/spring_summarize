@@ -1,7 +1,7 @@
-com/ksb/spring/Main.java
- com.ksb.spring.Main
-com/ksb/spring/ConnectionMaker.java
- com.ksb.spring.ConnectionMaker
+com/ksb/spring/UserService.java
+ com.ksb.spring.UserService
+com/ksb/spring/UserLevelUpgradePolicy.java
+ com.ksb.spring.UserLevelUpgradePolicy
 com/ksb/spring/DuplicateUserIdException.java
  com.ksb.spring.DuplicateUserIdException
 com/ksb/spring/UserServiceImpl.java
@@ -10,8 +10,8 @@ com/ksb/spring/UserServiceImpl.java
  com.ksb.spring.UserServiceImpl$MockUserDao
  com.ksb.spring.UserServiceImpl$TestUserService
  com.ksb.spring.UserServiceImpl$TestUserServiceException
-com/ksb/spring/NConnectionMaker.java
- com.ksb.spring.NConnectionMaker
+com/ksb/spring/MockMailSender.java
+ com.ksb.spring.MockMailSender
 com/ksb/spring/Level.java
  com.ksb.spring.Level
 com/ksb/spring/Calculator.java
@@ -19,8 +19,8 @@ com/ksb/spring/Calculator.java
  com.ksb.spring.Calculator$1
  com.ksb.spring.Calculator$2
  com.ksb.spring.Calculator$3
-com/ksb/spring/DConnectionMaker.java
- com.ksb.spring.DConnectionMaker
+com/ksb/spring/DummyMailSender.java
+ com.ksb.spring.DummyMailSender
 com/ksb/spring/UserServiceTx.java
  com.ksb.spring.UserServiceTx
 com/ksb/spring/UserDao.java
@@ -30,20 +30,13 @@ com/ksb/spring/User.java
 com/ksb/spring/UserDaoJdbc.java
  com.ksb.spring.UserDaoJdbc
  com.ksb.spring.UserDaoJdbc$1
-com/ksb/spring/StatementStrategy.java
- com.ksb.spring.StatementStrategy
 com/ksb/spring/LineCallback.java
  com.ksb.spring.LineCallback
-com/ksb/spring/JdbcContext.java
- com.ksb.spring.JdbcContext
- com.ksb.spring.JdbcContext$1
-com/ksb/spring/UserService.java
- com.ksb.spring.UserService
-com/ksb/spring/MockMailSender.java
- com.ksb.spring.MockMailSender
-com/ksb/spring/DaoFactory.java
- com.ksb.spring.DaoFactory
-com/ksb/spring/DummyMailSender.java
- com.ksb.spring.DummyMailSender
-com/ksb/spring/UserLevelUpgradePolicy.java
- com.ksb.spring.UserLevelUpgradePolicy
+com/ksb/spring/proxy/HelloUppercase.java
+ com.ksb.spring.proxy.HelloUppercase
+com/ksb/spring/proxy/Hello.java
+ com.ksb.spring.proxy.Hello
+com/ksb/spring/proxy/HelloTarget.java
+ com.ksb.spring.proxy.HelloTarget
+com/ksb/spring/proxy/UppercaseHandler.java
+ com.ksb.spring.proxy.UppercaseHandler

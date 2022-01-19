@@ -4,9 +4,11 @@ JUnitTest.java
  JUnitTest
 UserDaoTest.java
  UserDaoTest
-UserDaoTestJdbc.java
- UserDaoTestJdbc
-CalcSumTest.java
- CalcSumTest
 UserServiceTest.java
  UserServiceTest
+CalcSumTest.java
+ CalcSumTest
+UserDaoTestJdbc.java
+ UserDaoTestJdbc
+ReflectionTest.java
+ ReflectionTest
