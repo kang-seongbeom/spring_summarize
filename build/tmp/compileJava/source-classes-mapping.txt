@@ -40,3 +40,11 @@ com/ksb/spring/proxy/HelloTarget.java
  com.ksb.spring.proxy.HelloTarget
 com/ksb/spring/proxy/UppercaseHandler.java
  com.ksb.spring.proxy.UppercaseHandler
+com/ksb/spring/TransactionHandler.java
+ com.ksb.spring.TransactionHandler
+com/ksb/spring/MessageFactoryBean.java
+ com.ksb.spring.MessageFactoryBean
+com/ksb/spring/Message.java
+ com.ksb.spring.Message
+com/ksb/spring/TxProxyFactoryBean.java
+ com.ksb.spring.TxProxyFactoryBean
