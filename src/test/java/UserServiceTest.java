@@ -178,7 +178,6 @@ public class UserServiceTest {
         //변경된 타깃 설정을 이용해 다이내믹 프록시 오브젝트 다시 생성
         UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
-
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 

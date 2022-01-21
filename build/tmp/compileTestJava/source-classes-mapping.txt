@@ -14,3 +14,7 @@ FactoryBeanTest.java
  FactoryBeanTest
 UserServiceTest.java
  UserServiceTest
+DynamicProxyTest.java
+ DynamicProxyTest
+ DynamicProxyTest$1
+ DynamicProxyTest$UppercaseAdvice
