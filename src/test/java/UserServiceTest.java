@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailSender;
@@ -163,19 +164,19 @@ public class UserServiceTest {
     }
 
     @Test
-    @DirtiesContext
-    public void upgradeAllOrNothing() throws Exception {
+    @DirtiesContext//컨텍스트 설정 변경하기 때문에 여전히 필요
+    public void upgradeAllOrNothing() {
         UserServiceImpl.TestUserService testUserService =
                 new UserServiceImpl.TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
         testUserService.setMailSender(this.mailSender);
 
         //빈 자체를 가져올 때 &사용
-        TxProxyFactoryBean txProxyFactoryBean =
-                context.getBean("&userService", TxProxyFactoryBean.class);
+        ProxyFactoryBean txProxyFactoryBean =
+                context.getBean("&userService", ProxyFactoryBean.class);
         txProxyFactoryBean.setTarget(testUserService);
 
-        //변경된 타깃 설정을 이용해 다이내믹 프록시 오브젝트 다시 생성
+        //FactoryBean 타입 이므로 getObject()로 프록시를 가져옴
         UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
         userDao.deleteAll();

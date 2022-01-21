@@ -48,3 +48,5 @@ com/ksb/spring/Message.java
  com.ksb.spring.Message
 com/ksb/spring/TxProxyFactoryBean.java
  com.ksb.spring.TxProxyFactoryBean
+com/ksb/spring/TransactionAdvice.java
+ com.ksb.spring.TransactionAdvice
