@@ -70,12 +70,9 @@ public class UserServiceImpl implements UserService {
         this.mailSender.send(mailMessage);
     }
 
-    public static class TestUserService extends UserServiceImpl {
-        private String id;
-
-        public TestUserService(String id) {
-            this.id = id;
-        }
+    public static class TestUserServiceImpl extends UserServiceImpl {
+        //예외를 위해 user의 세 번째 값 id로 고정
+        private String id = "k2";
 
         @Override
         protected void upgradeLevel(User user) {

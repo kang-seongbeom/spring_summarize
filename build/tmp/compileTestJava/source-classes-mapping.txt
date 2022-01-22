@@ -15,6 +15,9 @@ FactoryBeanTest.java
 DynamicProxyTest.java
  DynamicProxyTest
  DynamicProxyTest$1
+ DynamicProxyTest$1$1
+ DynamicProxyTest$1HelloToby
+ DynamicProxyTest$1HelloWorld
  DynamicProxyTest$UppercaseAdvice
 UserServiceTest.java
  UserServiceTest

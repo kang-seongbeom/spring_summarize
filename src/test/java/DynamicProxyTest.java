@@ -5,6 +5,8 @@ import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
+import org.springframework.aop.ClassFilter;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -68,5 +70,49 @@ public class DynamicProxyTest {
         assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
         //setMappedName가 'sayH'이기 때문에 sayThankYou는 포함 안됨
         assertThat(proxiedHello.sayThankYou("Toby"), is("Thank You Toby"));
+    }
+
+    @Test
+    public void classNamePointcutAdvisor(){
+        NameMatchMethodPointcut classMethodPointcut = new NameMatchMethodPointcut(){
+            @Override
+            public ClassFilter getClassFilter() {
+                return new ClassFilter() {
+                    @Override
+                    public boolean matches(Class<?> clazz) {
+                        //class 이름이 HelloT로 시작하는 것만 선정
+                        return clazz.getSimpleName().startsWith("HelloT");
+                    }
+                };
+            }
+        };
+        classMethodPointcut.setMappedName("sayH*"); //메소드 매처
+
+        //테스트
+        checkAdviced(new HelloTarget(), classMethodPointcut, true);
+
+        class HelloWorld extends HelloTarget{};
+        checkAdviced(new HelloWorld(), classMethodPointcut, false);
+
+        class HelloToby extends HelloTarget{};
+        checkAdviced(new HelloToby(), classMethodPointcut, true);
+    }
+
+    private void checkAdviced(Object target, Pointcut pointcut,
+                              boolean adviced) {
+        ProxyFactoryBean pfBean = new ProxyFactoryBean();
+        pfBean.setTarget(target);
+        pfBean.addAdvisor(new DefaultPointcutAdvisor(pointcut, new UppercaseAdvice()));
+        Hello proxiedHello = (Hello) pfBean.getObject();
+
+        if(adviced){ //적용 대상
+            assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
+            assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
+            assertThat(proxiedHello.sayThankYou("Toby"), is("Thank You Toby"));
+        }else{ //적용 대상 아님
+            assertThat(proxiedHello.sayHello("Toby"), is("Hello Toby"));
+            assertThat(proxiedHello.sayHi("Toby"), is("Hi Toby"));
+            assertThat(proxiedHello.sayThankYou("Toby"), is("Thank You Toby"));
+        }
     }
 }

@@ -3,7 +3,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,8 +29,6 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
 public class UserServiceTest {
-    @Autowired
-    UserService userService;
 
     @Autowired
     UserDao userDao;
@@ -44,7 +40,10 @@ public class UserServiceTest {
     MailSender mailSender;
 
     @Autowired
-    UserServiceImpl userServiceImpl;
+    UserService userService;
+
+    @Autowired
+    UserService testUserService;
 
     @Autowired
     ApplicationContext context;
@@ -164,26 +163,12 @@ public class UserServiceTest {
     }
 
     @Test
-    @DirtiesContext//컨텍스트 설정 변경하기 때문에 여전히 필요
     public void upgradeAllOrNothing() {
-        UserServiceImpl.TestUserService testUserService =
-                new UserServiceImpl.TestUserService(users.get(3).getId());
-        testUserService.setUserDao(this.userDao);
-        testUserService.setMailSender(this.mailSender);
-
-        //빈 자체를 가져올 때 &사용
-        ProxyFactoryBean txProxyFactoryBean =
-                context.getBean("&userService", ProxyFactoryBean.class);
-        txProxyFactoryBean.setTarget(testUserService);
-
-        //FactoryBean 타입 이므로 getObject()로 프록시를 가져옴
-        UserService txUserService = (UserService) txProxyFactoryBean.getObject();
-
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 
         try {
-            txUserService.upgradeLevels(); //txHandler를 통한 upgradeLevels()실행
+            this.testUserService.upgradeLevels();
             fail("TestUserServiceException expected");
         } catch (UserServiceImpl.TestUserServiceException e) {
         }
