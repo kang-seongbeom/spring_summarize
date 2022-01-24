@@ -1,5 +1,18 @@
+PointCutTest.java
+ PointCutTest
 UserTest.java
  UserTest
+ReflectionTest.java
+ ReflectionTest
+DynamicProxyTest.java
+ DynamicProxyTest
+ DynamicProxyTest$1
+ DynamicProxyTest$1$1
+ DynamicProxyTest$1HelloToby
+ DynamicProxyTest$1HelloWorld
+ DynamicProxyTest$UppercaseAdvice
+FactoryBeanTest.java
+ FactoryBeanTest
 JUnitTest.java
  JUnitTest
 UserDaoTest.java
@@ -8,16 +21,5 @@ UserDaoTestJdbc.java
  UserDaoTestJdbc
 CalcSumTest.java
  CalcSumTest
-ReflectionTest.java
- ReflectionTest
-FactoryBeanTest.java
- FactoryBeanTest
-DynamicProxyTest.java
- DynamicProxyTest
- DynamicProxyTest$1
- DynamicProxyTest$1$1
- DynamicProxyTest$1HelloToby
- DynamicProxyTest$1HelloWorld
- DynamicProxyTest$UppercaseAdvice
 UserServiceTest.java
  UserServiceTest

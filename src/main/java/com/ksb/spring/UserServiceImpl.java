@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         this.mailSender.send(mailMessage);
     }
 
-    public static class TestUserServiceImpl extends UserServiceImpl {
+    public static class TestUserService extends UserServiceImpl {
         //예외를 위해 user의 세 번째 값 id로 고정
         private String id = "k2";
 
