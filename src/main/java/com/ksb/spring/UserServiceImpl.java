@@ -24,6 +24,26 @@ public class UserServiceImpl implements UserService {
         this.mailSender = mailSender;
     }
 
+    @Override
+    public User get(String id) {
+        return userDao.get(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
+
+    @Override
+    public void deleteAll() {
+        userDao.deleteAll();
+    }
+
+    @Override
+    public void update(User user1) {
+        userDao.update(user1);
+    }
+
     public void upgradeLevels() {
         List<User> users = userDao.getAll();
         for (User user : users) {
@@ -78,6 +98,13 @@ public class UserServiceImpl implements UserService {
         protected void upgradeLevel(User user) {
             if (user.getId().equals(this.id)) throw new TestUserServiceException();
             super.upgradeLevel(user);
+        }
+
+        public List<User> getAll(){
+            for (User user:super.getAll()){
+                super.update(user); //읽기전용 속성으로 인해 예외 발생
+            }
+            return null;
         }
     }
 

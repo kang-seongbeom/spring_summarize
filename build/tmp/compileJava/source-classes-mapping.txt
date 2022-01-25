@@ -30,8 +30,6 @@ com/ksb/spring/Calculator.java
  com.ksb.spring.Calculator$1
  com.ksb.spring.Calculator$2
  com.ksb.spring.Calculator$3
-com/ksb/spring/UserServiceTx.java
- com.ksb.spring.UserServiceTx
 com/ksb/spring/pointcutexpression/Bean.java
  com.ksb.spring.pointcutexpression.Bean
 com/ksb/spring/pointcutexpression/TargetInterface.java
