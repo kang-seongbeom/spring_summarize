@@ -10,13 +10,20 @@
 http://www.springframework.org/schema/tx
                             http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <tx:advice id="transactionAdvice">
-        <tx:attributes>
-            <!--propagation이 "REQUIRED"일 경우 생략 가능-->
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="*" />
-        </tx:attributes>
-    </tx:advice>
+    <!--transaction-manager가 transactionManager일 경우 생략 가능-->
+<!--    <tx:advice id="transactionAdvice">-->
+<!--        <tx:attributes>-->
+<!--            &lt;!&ndash;propagation이 "REQUIRED"일 경우 생략 가능&ndash;&gt;-->
+<!--            <tx:method name="get*" read-only="true"/>-->
+<!--            <tx:method name="*" />-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+
+    <!--    <aop:config>-->
+    <!--        <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>-->
+    <!--    </aop:config>-->
+
+    <tx:annotation-driven />
 
     <!--    <bean id="userService" class="com.ksb.spring.TxProxyFactoryBean">-->
     <!--        <property name="target" ref="userServiceImpl"/>-->
@@ -43,9 +50,7 @@ http://www.springframework.org/schema/tx
     <!--    </bean>-->
     <!--    -->
 
-    <aop:config>
-        <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>
-    </aop:config>
+
 
     <!--    <bean id="userService"-->
     <!--          class="org.springframework.aop.framework.ProxyFactoryBean">-->
