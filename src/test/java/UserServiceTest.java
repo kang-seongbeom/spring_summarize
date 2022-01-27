@@ -13,6 +13,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -97,7 +101,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void mockUpgradeLevels(){
+    public void mockUpgradeLevels() {
         UserServiceImpl userServiceImpl = new UserServiceImpl();
 
         //다이내믹한 목 오브젝트 생서와 메소드의 리턴 값 설정
@@ -114,8 +118,8 @@ public class UserServiceTest {
 
         //목 오브젝트가 제공하는 검증 기능을 통해서 어떤 메소드가 몇 번 호출 됐는지,
         //파라미터는 무엇인지 확인
-        verify(mockUserDao,times(2)).update(any(User.class));
-        verify(mockUserDao,times(2)).update(any(User.class));
+        verify(mockUserDao, times(2)).update(any(User.class));
+        verify(mockUserDao, times(2)).update(any(User.class));
         verify(mockUserDao).update(users.get(1));
         assertThat(users.get(1).getLevel(), is(Level.SILVER));
         verify(mockUserDao).update(users.get(3));
@@ -178,7 +182,20 @@ public class UserServiceTest {
     }
 
     @Test(expected = TransientDataAccessResourceException.class)
-    public void readOnlyTransactionAttribute(){
+    public void readOnlyTransactionAttribute() {
         testUserService.getAll();
+    }
+
+    @Test
+    public void transactionSync() {
+        DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+        TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
+        try {
+            userService.deleteAll();
+            userService.add(users.get(0));
+            userService.add(users.get(1));
+        } finally {
+            transactionManager.rollback(txStatus);
+        }
     }
 }
