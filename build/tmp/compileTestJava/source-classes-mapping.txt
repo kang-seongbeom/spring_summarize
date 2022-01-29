@@ -15,11 +15,11 @@ FactoryBeanTest.java
  FactoryBeanTest
 JUnitTest.java
  JUnitTest
-UserDaoTest.java
- UserDaoTest
-UserDaoTestJdbc.java
- UserDaoTestJdbc
 CalcSumTest.java
  CalcSumTest
+UserDaoTestJdbc.java
+ UserDaoTestJdbc
 UserServiceTest.java
  UserServiceTest
+UserDaoTest.java
+ UserDaoTest

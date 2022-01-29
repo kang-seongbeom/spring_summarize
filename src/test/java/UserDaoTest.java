@@ -5,15 +5,21 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class UserDaoTest {
 
     private final User user1 = new User("gyumee", "k1n", "k1p",
@@ -23,19 +29,8 @@ public class UserDaoTest {
     private final User user3 = new User("bumjin", "k3n", "k3p",
             Level.GOLD, 100, 40);
 
-    UserDaoJdbc dao;
-
-    @Before
-    public void setUp() {
-        dao = new UserDaoJdbc();
-        DataSource dataSource = new SingleConnectionDataSource(
-                "jdbc:mysql://localhost/toby?serverTimezone=UTC",
-                "root",
-                "1234",
-                true
-        );
-        dao.setDataSource(dataSource);
-    }
+    @Autowired
+    UserDao dao;
 
     @Test
     public void addAndGet() {

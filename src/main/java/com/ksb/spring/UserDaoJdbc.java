@@ -12,6 +12,11 @@ import java.sql.*;
 import java.util.List;
 
 public class UserDaoJdbc implements UserDao {
+    private SqlService sqlService;
+
+    public void setSqlService(SqlService sqlService){
+        this.sqlService = sqlService;
+    }
 
     private RowMapper<User> userMapper =
             new RowMapper<User>() {
@@ -42,43 +47,35 @@ public class UserDaoJdbc implements UserDao {
         int level = user.getLevel().intValue();
         int login = user.getLogin();
         int recommend = user.getRecommend();
-        String query = "insert into users(id, name, password, " +
-                "level, login, recommend) value (?,?,?,?,?,?)";
-        this.jdbcTemplate.update(query, id, name, password,
+        this.jdbcTemplate.update(sqlService.getSql("userAdd"), id, name, password,
                 level, login, recommend);
     }
 
     public void deleteAll() {
-        String query = "delete from users";
-        this.jdbcTemplate.update(query);
+        this.jdbcTemplate.update(sqlService.getSql("userDeleteAll"));
     }
 
     public User get(String id) {
-        String query = "select * from users where id = ?";
-        return this.jdbcTemplate.queryForObject(query,
+        return this.jdbcTemplate.queryForObject(sqlService.getSql("userGet"),
                 new Object[]{id}, this.userMapper);
     }
 
     public List<User> getAll() {
-        String query = "select * from users order by id";
-        return this.jdbcTemplate.query(query, this.userMapper);
+        return this.jdbcTemplate.query(sqlService.getSql("userGetAll"), this.userMapper);
     }
 
     public int getCount() {
-        String query = "select count(*) from users";
-        return this.jdbcTemplate.queryForObject(query, Integer.class);
+        return this.jdbcTemplate.queryForObject(sqlService.getSql("userGetCount"), Integer.class);
     }
 
     public void update(User user1) {
-        String query = "update users set name=?, password=?, level=?, " +
-                "login=?, recommend=? where id=?";
         String id = user1.getId();
         String name = user1.getName();
         String password = user1.getPassword();
         int level = user1.getLevel().intValue();
         int login = user1.getLogin();
         int recommend = user1.getRecommend();
-        this.jdbcTemplate.update(query, name, password,
+        this.jdbcTemplate.update(sqlService.getSql("userUpdate"), name, password,
                 level, login, recommend, id);
     }
 }

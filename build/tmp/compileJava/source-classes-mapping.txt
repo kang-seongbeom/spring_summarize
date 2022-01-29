@@ -38,9 +38,8 @@ com/ksb/spring/UserDao.java
  com.ksb.spring.UserDao
 com/ksb/spring/User.java
  com.ksb.spring.User
-com/ksb/spring/UserDaoJdbc.java
- com.ksb.spring.UserDaoJdbc
- com.ksb.spring.UserDaoJdbc$1
+com/ksb/spring/Message.java
+ com.ksb.spring.Message
 com/ksb/spring/proxy/HelloTarget.java
  com.ksb.spring.proxy.HelloTarget
 com/ksb/spring/UserService.java
@@ -55,5 +54,12 @@ com/ksb/spring/pointcutexpression/Target.java
  com.ksb.spring.pointcutexpression.Target
 com/ksb/spring/proxy/HelloUppercase.java
  com.ksb.spring.proxy.HelloUppercase
-com/ksb/spring/Message.java
- com.ksb.spring.Message
+com/ksb/spring/SimpleSqlService.java
+ com.ksb.spring.SimpleSqlService
+com/ksb/spring/SqlRetrievalFailException.java
+ com.ksb.spring.SqlRetrievalFailException
+com/ksb/spring/SqlService.java
+ com.ksb.spring.SqlService
+com/ksb/spring/UserDaoJdbc.java
+ com.ksb.spring.UserDaoJdbc
+ com.ksb.spring.UserDaoJdbc$1
