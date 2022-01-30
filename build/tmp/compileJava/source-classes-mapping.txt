@@ -6,6 +6,10 @@ com/ksb/spring/UserServiceImpl.java
  com.ksb.spring.UserServiceImpl$MockUserDao
  com.ksb.spring.UserServiceImpl$TestUserService
  com.ksb.spring.UserServiceImpl$TestUserServiceException
+com/ksb/spring/jaxb/Sqlmap.java
+ com.ksb.spring.jaxb.Sqlmap
+com/ksb/spring/SqlRetrievalFailException.java
+ com.ksb.spring.SqlRetrievalFailException
 com/ksb/spring/TransactionHandler.java
  com.ksb.spring.TransactionHandler
 com/ksb/spring/TxProxyFactoryBean.java
@@ -21,8 +25,16 @@ com/ksb/spring/NameMatchClassMethodPointcut.java
  com.ksb.spring.NameMatchClassMethodPointcut$SimpleClassFilter
 com/ksb/spring/UserLevelUpgradePolicy.java
  com.ksb.spring.UserLevelUpgradePolicy
+com/ksb/spring/XmlSqlService.java
+ com.ksb.spring.XmlSqlService
+com/ksb/spring/SimpleSqlService.java
+ com.ksb.spring.SimpleSqlService
+com/ksb/spring/jaxb/SqlType.java
+ com.ksb.spring.jaxb.SqlType
 com/ksb/spring/proxy/UppercaseHandler.java
  com.ksb.spring.proxy.UppercaseHandler
+com/ksb/spring/jaxb/ObjectFactory.java
+ com.ksb.spring.jaxb.ObjectFactory
 com/ksb/spring/Level.java
  com.ksb.spring.Level
 com/ksb/spring/Calculator.java
@@ -38,8 +50,11 @@ com/ksb/spring/UserDao.java
  com.ksb.spring.UserDao
 com/ksb/spring/User.java
  com.ksb.spring.User
-com/ksb/spring/Message.java
- com.ksb.spring.Message
+com/ksb/spring/SqlService.java
+ com.ksb.spring.SqlService
+com/ksb/spring/UserDaoJdbc.java
+ com.ksb.spring.UserDaoJdbc
+ com.ksb.spring.UserDaoJdbc$1
 com/ksb/spring/proxy/HelloTarget.java
  com.ksb.spring.proxy.HelloTarget
 com/ksb/spring/UserService.java
@@ -54,12 +69,5 @@ com/ksb/spring/pointcutexpression/Target.java
  com.ksb.spring.pointcutexpression.Target
 com/ksb/spring/proxy/HelloUppercase.java
  com.ksb.spring.proxy.HelloUppercase
-com/ksb/spring/SimpleSqlService.java
- com.ksb.spring.SimpleSqlService
-com/ksb/spring/SqlRetrievalFailException.java
- com.ksb.spring.SqlRetrievalFailException
-com/ksb/spring/SqlService.java
- com.ksb.spring.SqlService
-com/ksb/spring/UserDaoJdbc.java
- com.ksb.spring.UserDaoJdbc
- com.ksb.spring.UserDaoJdbc$1
+com/ksb/spring/Message.java
+ com.ksb.spring.Message

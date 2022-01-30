@@ -38,7 +38,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
     implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
 
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
 
 }
 

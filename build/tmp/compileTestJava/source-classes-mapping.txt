@@ -13,13 +13,15 @@ DynamicProxyTest.java
  DynamicProxyTest$UppercaseAdvice
 FactoryBeanTest.java
  FactoryBeanTest
+JaxbTest.java
+ JaxbTest
 JUnitTest.java
  JUnitTest
-CalcSumTest.java
- CalcSumTest
-UserDaoTestJdbc.java
- UserDaoTestJdbc
 UserServiceTest.java
  UserServiceTest
+UserDaoTestJdbc.java
+ UserDaoTestJdbc
+CalcSumTest.java
+ CalcSumTest
 UserDaoTest.java
  UserDaoTest
