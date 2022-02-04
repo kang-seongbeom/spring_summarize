@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "sqlmapType", propOrder = {
     "sql"
 })
 @XmlRootElement(name = "sqlmap", namespace = "http://www.epril.com/sqlmap")
