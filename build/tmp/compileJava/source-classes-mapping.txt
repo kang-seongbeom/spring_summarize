@@ -83,3 +83,7 @@ com/ksb/spring/DefaultSqlService.java
  com.ksb.spring.DefaultSqlService
 com/ksb/spring/JaxbXmlSqlReader.java
  com.ksb.spring.JaxbXmlSqlReader
+com/ksb/spring/OxmSqlService.java
+ com.ksb.spring.OxmSqlService
+ com.ksb.spring.OxmSqlService$1
+ com.ksb.spring.OxmSqlService$OxmSqlReader

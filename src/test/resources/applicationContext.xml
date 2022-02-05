@@ -92,12 +92,17 @@
     </bean>
 
 
-    <bean id="sqlService" class="com.ksb.spring.DefaultSqlService"/>
+<!--    <bean id="sqlService" class="com.ksb.spring.DefaultSqlService"/>-->
 
-<!--    <bean id="sqlService" class="com.ksb.spring.BaseSqlService">-->
-<!--        <property name="sqlReader" ref="sqlReader"/>-->
-<!--        <property name="sqlRegistry" ref="sqlRegistry"/>-->
-<!--    </bean>-->
+    <bean id="sqlService" class="com.ksb.spring.OxmSqlService">
+        <property name="unmarshaller" ref="unmarshaller"/>
+        <property name="sqlmap" value="classpath:/sqlmap.xml"/>
+    </bean>
+
+    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="com.ksb.spring.jaxb"/>
+    </bean>
+
 
 <!--    <bean id="sqlReader" class="com.ksb.spring.JaxbXmlSqlReader">-->
 <!--        <property name="sqlmapFile" value="/sqlmap.xml"/>-->
