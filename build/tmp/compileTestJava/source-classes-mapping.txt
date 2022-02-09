@@ -1,9 +1,11 @@
 PointCutTest.java
  PointCutTest
+EmbeddedDbTest.java
+ EmbeddedDbTest
 UserTest.java
  UserTest
-UserServiceTest.java
- UserServiceTest
+OxmTest.java
+ OxmTest
 ReflectionTest.java
  ReflectionTest
 DynamicProxyTest.java
@@ -17,6 +19,8 @@ FactoryBeanTest.java
  FactoryBeanTest
 JaxbTest.java
  JaxbTest
+UserServiceTest.java
+ UserServiceTest
 JUnitTest.java
  JUnitTest
 UserDaoTest.java
@@ -25,5 +29,9 @@ UserDaoTestJdbc.java
  UserDaoTestJdbc
 CalcSumTest.java
  CalcSumTest
-OxmTest.java
- OxmTest
+AbstractUpdateSqlRegistryTest.java
+ AbstractUpdateSqlRegistryTest
+ConcurrentHashMapSqlRegistryTest.java
+ ConcurrentHashMapSqlRegistryTest
+EmbeddedDbSqlRegistryTest.java
+ EmbeddedDbSqlRegistryTest

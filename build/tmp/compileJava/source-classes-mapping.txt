@@ -77,13 +77,24 @@ com/ksb/spring/SqlRegistry.java
  com.ksb.spring.SqlRegistry
 com/ksb/spring/BaseSqlService.java
  com.ksb.spring.BaseSqlService
-com/ksb/spring/HashMapSqlRegistry.java
- com.ksb.spring.HashMapSqlRegistry
-com/ksb/spring/DefaultSqlService.java
- com.ksb.spring.DefaultSqlService
 com/ksb/spring/JaxbXmlSqlReader.java
  com.ksb.spring.JaxbXmlSqlReader
+com/ksb/spring/SqlNotFoundException.java
+ com.ksb.spring.SqlNotFoundException
+com/ksb/spring/UpdatableSqlRegistry.java
+ com.ksb.spring.UpdatableSqlRegistry
+com/ksb/spring/ConcurrentHashMapSqlRegistry.java
+ com.ksb.spring.ConcurrentHashMapSqlRegistry
+com/ksb/spring/SqlUpdateFailureException.java
+ com.ksb.spring.SqlUpdateFailureException
 com/ksb/spring/OxmSqlService.java
  com.ksb.spring.OxmSqlService
  com.ksb.spring.OxmSqlService$1
  com.ksb.spring.OxmSqlService$OxmSqlReader
+com/ksb/spring/DefaultSqlService.java
+ com.ksb.spring.DefaultSqlService
+com/ksb/spring/HashMapSqlRegistry.java
+ com.ksb.spring.HashMapSqlRegistry
+com/ksb/spring/EmbeddedDbSqlRegistry.java
+ com.ksb.spring.EmbeddedDbSqlRegistry
+ com.ksb.spring.EmbeddedDbSqlRegistry$1

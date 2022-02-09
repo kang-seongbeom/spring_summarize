@@ -44,9 +44,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/spring-oxm
     implementation group: 'org.springframework', name: 'spring-oxm', version: '3.0.7.RELEASE'
 
-
-
-
+    // https://mvnrepository.com/artifact/hsqldb/hsqldb
+    testImplementation group: 'hsqldb', name: 'hsqldb', version: '1.8.0.7'
 
 }
 
