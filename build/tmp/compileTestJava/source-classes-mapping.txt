@@ -19,19 +19,19 @@ FactoryBeanTest.java
  FactoryBeanTest
 JaxbTest.java
  JaxbTest
-UserServiceTest.java
- UserServiceTest
+EmbeddedDbSqlRegistryTest.java
+ EmbeddedDbSqlRegistryTest
 JUnitTest.java
  JUnitTest
-UserDaoTest.java
- UserDaoTest
+ConcurrentHashMapSqlRegistryTest.java
+ ConcurrentHashMapSqlRegistryTest
 UserDaoTestJdbc.java
  UserDaoTestJdbc
 CalcSumTest.java
  CalcSumTest
 AbstractUpdateSqlRegistryTest.java
  AbstractUpdateSqlRegistryTest
-ConcurrentHashMapSqlRegistryTest.java
- ConcurrentHashMapSqlRegistryTest
-EmbeddedDbSqlRegistryTest.java
- EmbeddedDbSqlRegistryTest
+UserDaoTest.java
+ UserDaoTest
+UserServiceTest.java
+ UserServiceTest

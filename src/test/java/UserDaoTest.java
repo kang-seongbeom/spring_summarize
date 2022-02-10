@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
+@ContextConfiguration(classes = TestApplicationContext.class)
 public class UserDaoTest {
 
     private final User user1 = new User("gyumee", "k1n", "k1p",

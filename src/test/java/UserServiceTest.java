@@ -32,7 +32,7 @@ import static com.ksb.spring.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
+@ContextConfiguration(classes = TestApplicationContext.class)
 public class UserServiceTest {
 
     @Autowired
