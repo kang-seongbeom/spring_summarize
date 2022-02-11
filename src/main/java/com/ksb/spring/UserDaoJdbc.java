@@ -1,21 +1,35 @@
 package com.ksb.spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
+
+//@Repository("userDao")
+@Repository
 public class UserDaoJdbc implements UserDao {
+
+    @Autowired
     private SqlService sqlService;
 
     public void setSqlService(SqlService sqlService){
         this.sqlService = sqlService;
+    }
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     private RowMapper<User> userMapper =
@@ -33,12 +47,6 @@ public class UserDaoJdbc implements UserDao {
                     return user;
                 }
             };
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     public void add(final User user) {
         String id = user.getId();

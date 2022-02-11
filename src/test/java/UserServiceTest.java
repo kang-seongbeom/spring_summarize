@@ -3,19 +3,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Arrays;
@@ -32,7 +30,8 @@ import static com.ksb.spring.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestApplicationContext.class)
+@ActiveProfiles("test")
+@ContextConfiguration(classes = AppContext.class)
 public class UserServiceTest {
 
     @Autowired
@@ -52,6 +51,9 @@ public class UserServiceTest {
 
     @Autowired
     ApplicationContext context;
+
+    @Autowired
+    DefaultListableBeanFactory bf;
 
     List<User> users;
 
@@ -197,5 +199,12 @@ public class UserServiceTest {
         } finally {
             transactionManager.rollback(txStatus);
         }
+    }
+
+    @Test
+    public void beans() {
+        for (String n : bf.getBeanDefinitionNames())
+            System.out.println("컨테이너 내부 빈 : " + n +
+                    "\t" + bf.getBean(n).getClass().getName());
     }
 }
