@@ -40,16 +40,16 @@ com/ksb/spring/NameMatchClassMethodPointcut.java
  com.ksb.spring.NameMatchClassMethodPointcut$SimpleClassFilter
 com/ksb/spring/UpdatableSqlRegistry.java
  com.ksb.spring.UpdatableSqlRegistry
-com/ksb/spring/SqlServiceContext.java
- com.ksb.spring.SqlServiceContext
 com/ksb/spring/SqlRegistry.java
  com.ksb.spring.SqlRegistry
 com/ksb/spring/UserLevelUpgradePolicy.java
  com.ksb.spring.UserLevelUpgradePolicy
 com/ksb/spring/JaxbXmlSqlReader.java
  com.ksb.spring.JaxbXmlSqlReader
-com/ksb/spring/DefaultSqlService.java
- com.ksb.spring.DefaultSqlService
+com/ksb/spring/UserSqlMapConfig.java
+ com.ksb.spring.UserSqlMapConfig
+com/ksb/spring/Message.java
+ com.ksb.spring.Message
 com/ksb/spring/XmlSqlService.java
  com.ksb.spring.XmlSqlService
 com/ksb/spring/SimpleSqlService.java
@@ -67,6 +67,8 @@ com/ksb/spring/Calculator.java
  com.ksb.spring.Calculator$1
  com.ksb.spring.Calculator$2
  com.ksb.spring.Calculator$3
+com/ksb/spring/SqlMapConfig.java
+ com.ksb.spring.SqlMapConfig
 com/ksb/spring/SqlUpdateFailureException.java
  com.ksb.spring.SqlUpdateFailureException
 com/ksb/spring/UserDao.java
@@ -84,10 +86,12 @@ com/ksb/spring/UserDaoJdbc.java
  com.ksb.spring.UserDaoJdbc$1
 com/ksb/spring/HashMapSqlRegistry.java
  com.ksb.spring.HashMapSqlRegistry
-com/ksb/spring/proxy/HelloTarget.java
- com.ksb.spring.proxy.HelloTarget
+com/ksb/spring/DefaultSqlService.java
+ com.ksb.spring.DefaultSqlService
 com/ksb/spring/UserService.java
  com.ksb.spring.UserService
+com/ksb/spring/proxy/HelloTarget.java
+ com.ksb.spring.proxy.HelloTarget
 com/ksb/spring/MockMailSender.java
  com.ksb.spring.MockMailSender
 com/ksb/spring/MessageFactoryBean.java
@@ -98,9 +102,11 @@ com/ksb/spring/pointcutexpression/Target.java
  com.ksb.spring.pointcutexpression.Target
 com/ksb/spring/proxy/HelloUppercase.java
  com.ksb.spring.proxy.HelloUppercase
-com/ksb/spring/Message.java
- com.ksb.spring.Message
+com/ksb/spring/SqlServiceContext.java
+ com.ksb.spring.SqlServiceContext
 com/ksb/spring/AppContext.java
  com.ksb.spring.AppContext
  com.ksb.spring.AppContext$ProductionAppContext
  com.ksb.spring.AppContext$TestAppContext
+com/ksb/spring/EnableSqlService.java
+ com.ksb.spring.EnableSqlService

@@ -4,29 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.oxm.Unmarshaller;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
 
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
-
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.ksb.spring")
-@Import(SqlServiceContext.class)
-@PropertySource(value = "/database.properties")
-public class AppContext {
+//@Import(SqlServiceContext.class)
+@EnableSqlService
+@PropertySource("classpath:/database.properties")
+public class AppContext implements SqlMapConfig{
 
     @Autowired
     SqlService sqlService;
@@ -34,19 +30,10 @@ public class AppContext {
     @Autowired
     UserDao userDao;
 
-    @Autowired
-    Environment env;
-
     @Bean
     public DataSource dataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        try{
-            String name = env.getProperty("db.username");
-            System.out.println("에러? : "+name);
-        }catch (Exception e){
-            System.out.println("에러? : " + e.getCause());
-        }
-
+        //현재 Enviroment의 값이 null이라 값을 주입할 수 없음
         try {
             dataSource.setDriverClass((Class<? extends Driver>) Class.forName("com.mysql.cj.jdbc.Driver"));
         } catch (ClassNotFoundException e) {
@@ -64,6 +51,11 @@ public class AppContext {
         DataSourceTransactionManager tm = new DataSourceTransactionManager();
         tm.setDataSource(dataSource());
         return tm;
+    }
+
+    @Override
+    public Resource getSqlMapResource() {
+        return new ClassPathResource("/sqlmap.xml", UserDao.class);
     }
 
     @Configuration
@@ -91,5 +83,4 @@ public class AppContext {
             return new DummyMailSender();
         }
     }
-
 }
