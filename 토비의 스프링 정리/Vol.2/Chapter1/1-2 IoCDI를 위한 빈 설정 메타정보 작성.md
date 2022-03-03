@@ -8,7 +8,7 @@
 - 따라서 정보가 담긴 리소스의 종류와 작성 방식에 **독립적**임
 - `BeanDefinition` 생성기를 사용할 수만 있다면, 빈 설정 메타정보를 담은 소스는 어떤 식으로 만들어도 상관 없음
     
-    ![KakaoTalk_20220301_195903580.jpg](images/2/KakaoTalk_20220301_195903580.jpg)
+    ![KakaoTalk_20220301_195903580.jpg](1%202%20IoC%20DI%20413ed/KakaoTalk_20220301_195903580.jpg)
     
 - `BeanDefinition`에는 IoC 컨테이너가 빈을 만들 때 필요한 **핵심 정보**가 담겨 있음
 - 몇 가지 필수 항목을 제외하면 컨테이너에 미리 설정된 **디폴트 값**이 그대로 적용됨
@@ -23,7 +23,7 @@
 - 핵심 항목 몇 가지만 살펴볼 것임
     - 빈 메타정보 : `BeanDefinition`의 핵심 항목
         
-        ![캡처.PNG](images/2/%EC%BA%A1%EC%B2%98.png)
+        ![캡처.PNG](1%202%20IoC%20DI%20413ed/%EC%BA%A1%EC%B2%98.png)
         
 - 스프링의 IoC/DI 기술은 단순하게 클래스로 오브젝트를 만들고 프로퍼티 설정하는 것이 전부가 아님
 - 스프링은 오브젝트를 컨테이너가 생성하고 관리하는 과정에서 필요한 매우 세밀하고 유연한 방법을 제공함
@@ -348,7 +348,7 @@
         - 빈 스캐닝은 애플리케이션 별로 각각 진행되는 작업임
         - XML이라면 알아서 각각 컨텍스트에 속한 빈을 등록하면 되겠지만, **빈 스캐닝**은 한 번에 **최상위 패키지를 지정**해서 하는 것이니 자칫하면 양쪽 컨텍스트의 빈 스캐너가 같은 클래스를 **중복해서 빈으로 등록**해버릴 수 있음
             
-            ![KakaoTalk_20220302_150341937.jpg](images/2/KakaoTalk_20220302_150341937.jpg)
+            ![KakaoTalk_20220302_150341937.jpg](1%202%20IoC%20DI%20413ed/KakaoTalk_20220302_150341937.jpg)
             
         - 위 그림의 `UserService`는 **루트 컨텍스트**에서 **트랜잭션**이 적용된 채로 사용돼야 함
         - 컨텍스트 계층구조에서 빈을 찾을 때는 자신의 컨텍스트를 먼저 검색하고, 없을 때만 부모 컨텍스트를 찾음
@@ -373,3 +373,381 @@
         - contextLocations 파라미터에는 스캔 대상 패키지를 넣어야 함
         - 이 방법의 장점은 모든 빈의 정보가 자바 코드에 담겨 있으므로 타입에 안전한 방식으로 작성할 수 있음
         - 가장 큰 단점은 스키마에 적용된 전용 태그를 사용할 수 없다는 것임
+        
+
+1.2.9 빈의 의존관계 설정 방법
+
+- DI를 위한 의존관계 메타정보 작성 방법임
+- 빈 사이의 의존관계 메타정보를 작성하는 방법은 여러 가지 기준으로 분류할 수 있음
+- DI할 대상을 선정하는 방법으로 분류해보면 **명시적**인 방법과 일정 **규칙**에 따라 자동으로 선정하는 방법으로 나눌 수 있음
+- 일정 규칙은 주로 타입을 비교하는 방법을 사용하고, 이를 **자동와이어링(Autowiring)**이라 함
+- 빈 등록 방식과 빈 의존관계 주입 방법은 메타정보 작성 방법이 하상 같아야 하는 게 아님
+- 예를 들어 <bean> 태그를 사용해 빈을 등록하고, 그 의존관계 정보는 애노테이션으로 작성할 수 있음
+- 일반적으로 DI라고 하면 스프링이 관여하는 빈 오브젝트 사이의 관계를 말하지만, 넓게 보자면 빈 외의 오브젝트 또는 단순 값을 **주입**하는 것도 포함함
+
+1.2.10 XML : <property>, <constructor-arg>
+
+- <bean>을 이용해 빈을 등록했다면 **두 가지** 방식으로 DI를 지정할 수 있음
+    1. 프로퍼티
+    2. 생성자
+- 프로퍼티는 자바빈 규약을 따르는 수정자 메소드를 사용함
+- 생성자는 빈 클래스의 생성자를 이용하는 방법임
+- 두 가지 방법 모두 파라미터로 **의존 오브젝트** 또는 **값**을 **주입**함
+
+1.2.11 <property> : 수정자 주입
+
+- 수정자를 통해 의존관계의 빈을 주입하려면 <property> 태그를 사용할 수 있음
+- ref 애트리뷰트를 사용하면 빈의 이름을 이용해 주입할 빈을 찾음
+    
+    ```xml
+    <bean ...>
+        <property name="printer" ref="defaultPrinter" />
+    <bean>
+    ```
+    
+- value 애트리뷰트를 사용하면 단순 값 또는 빈이아닌 오브젝트르 주입할 때 사용함
+    
+    ```xml
+    <property name="name" value="Spring" />
+    <property name="myClass" value="java.lang.String" />
+    ```
+    
+- value 애트리뷰트는 값을 수정자의 타입에 맞게 적절히 변환을 시도함
+- 적절한 변환기를 컨테이너에 등록하면 어떤 오브젝트도 value 애트리뷰트의 값으로부터 생성해서 프로퍼티에 주입할 수 있음
+- XML의 <property>에는 해당 프로퍼티의 타입정보가 나타나지 않기 때문에, 타입이 호환되는지 주의르 기울여서 작성해야 함
+
+1.2.12 <constructor-arg> : 생성자 주입
+
+- 생성자를 통한 빈 도는 값의 주입에 사용됨
+- 생성자의 파라미터를 이용하기 때문에, 한 번에 여러 개의 오브젝트를 주입할 수 있음
+- 대신 파라미터 순서나 타입을 명시하는 방법이 필요함
+    
+    ```xml
+    <bean id="hello" class="com.ksb...">
+        <constructor-arg index="0" value="Spring" />
+        <constructor-arg index="1" ref="printer" />
+    </bean>
+    ```
+    
+    ```xml
+    <construct-arg type="java.lang.String" value="Spring" />
+    <construct-arg type="com.ksb.Printer" ref="printer" />
+    ```
+    
+- 생성자의 파라미터 개수가 많고 비슷한 타입이 있어 혼란이 있는 경우를 위해 생성자 파라미터 이름을 지정하는 방법도 제공함
+    
+    ```xml
+    <construct-arg name="name" value="Spring" />
+    <construct-arg name="printer" ref="printer" />
+    ```
+    
+
+1.2.13 XML : 자동와이어링
+
+- XML 문서의 양을 대폭 줄일 수 있는 획기적인 방법임
+- 하지만, 그만큼 위험도가 따르기 때문에 주의를 기울여야 함
+- 프로퍼티나 생성자 파라미털르 지정하지 않고 미리 정해진 규칙을 이용해 자동으로 DI 설정을 컨테이너가 추가하도록 만드는 것임
+- byName : 빈 이름 자동와이어링
+    - 보통 관례에 따라 빈의 이름은 클래스의 이름이나 빈이 구현한 대표적인 인터페이스 이름을 따름
+        
+        ```xml
+        <bean id="hello" class="...">
+            <property name="name" ref="Spring" />
+            <property name="printer" ref="printer" />
+        </bean>
+        
+        <bean id="printer" class="...StringPrinter" />
+        ```
+        
+    - 빈 이름 자동와이어링은 이런 관례를 이용한 방법임
+    - autowired 모드를 지정하면 <property name="printer" ref="printer" />를 생략할 수 있음
+        
+        ```xml
+        <bean id="hello" class="..." autowired="byName">
+            <property name="name" ref="Spring" />
+            <!--<property name="printer" ref="printer" />는 컨테이너가 자동으로 추가-->
+        </bean>
+        
+        <bean id="printer" class="...StringPrinter" />
+        ```
+        
+    - 이름과 동일한 빈을 찾아서 자동으로 **프로퍼티**로 등록함
+    - 프로퍼티와 이름이 같은 빈이 없는 경우는 무시됨
+    - 설정 파일 모든 빈에 적용할 것이라면 루트 태그인 <beans>의 디폴트 자동와이어링 옵션을 변경해줘도 됨
+        
+        ```xml
+        <beans default-autowire="byName">
+            ...
+        </beans>
+        ```
+        
+- byType : 타입에 의한 자동와이어링
+    - 프로퍼티 타입과 각 빈의 **타입**을 비교해서 자동으로 연결하는 방법임
+        
+        ```xml
+        <bean id="hello" class="..." autowire="byType">...</bean>
+        <bean id="mainPrinter" class="...StringPrinter">
+        ```
+        
+    - 타입에 의한 방식은 빈의 이름이나 프로퍼티 이름에 신경을 쓰지 않아도 됨
+    - 하지만, 타입이 같은 빈이 두 개 이상 존재하면 적용되지 못함
+    - 또한 자동와이어링은 빈의 모든 프로퍼티에 **일괄 적용**되기 때문에, 프로퍼티 개수가 많아지면 자동와이어링 대상이 아님에도 한 번씩 **모든 빈의 타입과 비교**되는 작업이 발생되기 때문에 이름에 의한 자동와이어링에 비해 속도가 **느림**
+    - 생성자에 자동와이어링을 적용 하려면 autowire=”constructor” 애트리뷰트를 이용하면 됨
+- 자동와이어링은 XML 설정파일의 양을 대폭 줄여줄 수 있는 획기적인 방법임
+- 하지만, 단점도 있음
+- 자동와이어링 방식은 자동으로 의존관계 정보를 생성하기 때문에, XML만 봐서 빈 사이의 의존관계를 알기 힘듦
+- 또한, 오타로 빈 이름을 잘못 적으면 DI 되지 않고 넘어갈 위험이 있음
+- 마지막으로, 하나의 빈에 대해 한 가지 자동와이어링 방식밖에 지정할 수 없음
+- 프로퍼티가 많더라도 일부는 **타입**으로, 일부는 **이름**으로 자동와이어링되게 만들 수 없음
+- DAO나 서비스 계층의 경우 타입에 의한 자동와이어링이 편함
+- 반면에 기술 서비스나 기반 서비스 빈의 경우 동일 **타입**의 빈이 하나이상 등록될 가능성이 많기 때문에 **이름**에 의한 자동와이어링을 적용하는 편이 좋음
+
+1.2.14 XML : 네임스페이스와 전용 태그
+
+- 스키마를 정의해서 사용하느 전용 태그의 의존관계 지정은 단순하지 않음
+- <property> 또는 <constructor-arg> DI용 태그가 고정되어 있지 않고, 태그 하나당 몇 개의 빈이 만들어지고 이름이 무엇인지 명확하지 않기 때문임
+- 관례적으로 전용 태그에 의해 만들어지는 빈을 다른 빈이 참조하는 경우 id 애트리뷰트를 사용해 빈의 아이디를 지정함
+    
+    ```xml
+    <oxm:jax2-marshaller id="unmarshaller" contextPath="..." />
+    ```
+    
+- 이를 다른 빈에 DI할 때 ref 값으로 넣으면 됨
+    
+    ```xml
+    <property name="unmarshaller" ref="unmarshaller">
+    ```
+    
+- 일반적으로 스프링 전용 태그는 보통 -ref로 끝나는 애트리뷰트를 이용해 DI 할 빈을 지정하는 **관례**가 있음
+- AOP 어드바이저 빈인 <aop:advisor> 처럼 -ref가 붙는 경우와 붙지 않는 경우에 분명한 차이가 있으니 주의해야 함
+    
+    ```xml
+    <aop:config>
+        <aop:advisor advice-ref="reansactionAdvice" pointcut="bean(*Service)"/>
+    </aop:config>
+    <bean id="transactionAdvice" .../>
+    ```
+    
+- 빈의 아이디와 레퍼런스를 명시적으로 선언하는 방식으로 사용하다면 네임스페이스를 쓰는 전용 태그도 간단히 의존관계를 정의할 수 있음
+- 다만 상당수의 전용 태그는 컨테이너가 참조하는 설정정보롬나 사용되기 때문에 아이디 선언조차 하지 않는 경우가 많음
+- 전용태그도 내부적으로 <bean>으로 선언한 것과 동일하게 빈 메타정보가 만들어지므로 자동와이어링의 대상이 될 수 있음
+- 하지만, 기술 서비스나 기반 서비스의 경우 가능한 id를 이용해 명시적으로 선언하는 것이 좋음
+
+1.2.15 애노테이션 : @Resource
+
+- @Resource는 <property> 선언과 비슷하게 준비할 빈을 **아이디**로 지정하는 방법임
+- **수정자**뿐만이 아니라 **필드**에 DI할 수 있음
+- 수정자
+    
+    ```java
+    public class Hello{
+        private Printer printer;
+        @Resource(name="printer") //<property name="printer" ref="printer"> 동일
+        public void setPrinter(Printer printer){
+            this.printer=printer;
+        }
+    }
+    ```
+    
+    - @Resource는 XML의 <property> 태그와 대응된다고 볼 수 있음
+    - 자바빈의 수정자 메소드의 관레에 따라 메소드 이름으로부터 프로퍼티 이름을 끌어낼 수 있기 때문에 name=”printer”로 충분
+    - @Resource와 같은 애노테이션으로 된 의존관계 정보를 이용해 DI가 이뤄지게 하려면 세 가지 방법 중 하나를 선택해야 함
+        1. XML의 <context:annotation-config />
+        2. XML의 <context:component-scan />
+        3. `AnnotationConfigApplicationContext` 또는 `AnnotationConfigWebApplicationContext`
+    - <context:annotation-config />는 @Resource와 같은 애노테이션 의존 관계 정보를 읽어서 메타정보를 추가해주는 기능을 가진 **빈 후처리기**를 등록해주는 전용 태그임
+        
+        ```xml
+        <beans xmlns="..."
+               xsi:schemaLocation="http://www.springframework.org/schema/context
+                http:http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+            <context:annotation-config />
+        </beans>
+        ```
+        
+        - <context:annotation-config />에 의해 빈 후처리기는 AOP의 자동 프록시 생성기처럼 새로운 빈을 등록해주지 않음
+        - 대신 이미 등록된 빈의 메타정보에 프로퍼티 항목을 추가해주는 작업을 함
+    - <context:component-scan />은 XML안에 **빈 스캐닝**을 이용하는 경우에 사용함
+        
+        ```xml
+        <context:component-scan base-package="com.ksb...." />
+        ```
+        
+        - 빈 스캐닝은 항상 애노테이션 의존관계 설정을 지원한다고 기억하면 됨
+- 필드
+    
+    ```java
+    @Component
+    public class Hello {
+        @Resource(name="printer")//참조할 빈의 이름 지정. 생략 가능
+        private Printer printer;
+        // 수정자 메소드 없음
+    }
+    ```
+    
+    - private 가능
+    - 이런 방법을 **필드 주입(Filed Injection)**이라 함
+    - 수정자가 없다면 코드는 간결해짐
+    - 하지만, 단위 테스트가 필요한 클래스에 수정자 메소드가 필요하므로 바람직하지 못함
+    - 또한, 수정자에서 다른 작업을 하는 경우 필드 주입을 사용하면 안됨
+    - 통합 테스트인 경우 필드 주입을 사용해도 별로 문제가 되지 않음
+- 애노테이션의 장점은 소스코드와 함계 있기 때문에 각종 타입과 이름 등의 메타정보를 이용해 **디폴트 설정**을 쉽게 만들 수 있다는 것임
+- 자동으로 프로퍼티 이름과 참조할 빈 이름을 결정한다는 명에서 XML에서 사용하는 이름을 이용한 자동와이어링과 비슷하게 보이기도 함
+- 하지만 차이점이 있음
+- XML은 프로퍼티에 주입할 만한 후보 빈이 없으면 무시하고 넘어가는 반면, 애노테이션은 코드와 관례를 이용하여 DI 적용 여부를 프로퍼티마다 세밍하게 제어할 수 있음
+- 디폴트 이름으로 참조할 빈을 찾을 수 없는 경우 타입을 이요해 다시 한번 빈을 찾기도 함
+- 하지만 권장하지 않음
+- @Resource를 사용는 경우는 드물지만 빈에서 애플리케이션 컨텍스트에 접근해야할 때 사용됨
+    
+    ```java
+    @Resource
+    ApplicationContext context;
+    ```
+    
+
+1.2.16 애노테이션 : @Autowired
+
+- @Resource와 사용 방법이 비슷함
+- @Resource와 차이점은 이름 대신 필드나 프로퍼티 **타입** 이용해 후보빈을 찾는다는 것임
+- @Autowired는 XML의 타입에 의한 자동와이어링 방식을 **네 가지**로 확장 한 것임
+    1. 생성자
+        
+        ```java
+        public class BaseSqlService implements SqlService{
+            @Autowired //단 한 개의 생성자에만 부여 가능
+            public BaseSqlService(SqlReader sqlReader, SqlRegistry sqlRegistry){
+                this.sqlReader=sqlReader;
+                this.sqlRegistry=sqlRegistry;
+            }
+        }
+        ```
+        
+        - 생성자는 여러 값을 한 번에 주입받을 수 있지만, 한 개의 생성자에만 사용할 수 있다는 단점이 있음
+    2.  필드 
+        
+        ```java
+        public class Hello{
+            @Autowired
+            private Printer printer;
+        }
+        ```
+        
+    3. 수정자 메소드
+        
+        ```java
+        public class Hello{
+            private Printer printer;
+            @Autowired
+            public void setPrinter(Printer printer){
+                this.printer=printer;
+            }
+        }
+        ```
+        
+    4.  일반 메소드
+        
+        ```java
+        public class BaseSqlService implements SqlService{
+            @Autowired
+            public config(SqlReader sqlReader, SqlRegistry sqlRegistry){
+                this.sqlReader=sqlReader;
+                this.sqlRegistry=sqlRegistry;
+            }
+        }
+        ```
+        
+        - 일반 메소드 주입은 애노테이션 방식의 **고유한 기능**임
+        - 여러 메소드에 @Autowired 부여 가능
+        - 일반 메소드를 통한 DI는 XML을 통해서 의존관계를 설정할 수 없음
+- @Autowired는 기본적으로 타입에 의해 빈을 찾음
+- 중복된 타입의 빈이 존재한다고 이름을 통해 빈을 찾는 @Resource를 사용할 필요는 없음
+    - **컬렉션과 배열**을 사용하면 같은 타입의 빈이 하나 이상 존재해도 @Autowired를 사용하여 빈을 여러개 DI 받을 수 있음
+        
+        ```java
+        @Autowired Collecgtion<Printer> printers;
+        @Autowired Printer[] printers;
+        @Autowired Map<String, Printer> printerMap;
+        
+        ```
+        
+        - 컬렉션과 배열을 단지 같은 타입의 빈이 여러 개 등록되는 경우에 충돌을 피하려고 사용하면 안됨
+        - 의도적으로 같은 여러 개의 빈을 등록하고 이를 모두 참조하거나 선별적으로 필요한 빈을 찾을 때 사용하는 것이 좋음
+        - 한 가지 주의사항은 DI 할 빈의 타입이 컬렉션인 경우 @Autowired로 자동 설정이 불가능하다는 점임
+        - 빈 자체가 컬렉션인 경우 @Resource를 이용해야 함
+    - **@Qualifier**는 **한정자**라 불리고, 타입 외의 정보를 추가해서 자동와이어링을 세밀하게 제어 할 수 있는 보조적인 방법임
+        - 타입만으로 원하는 빈을 지정하기 어려운 경우에 사용할 수 있음
+        - 두 개의 DB를 사용하는데, 둘 다 `Datasource` 타입인 경우가 이에 해당함
+            
+            ```xml
+            <bean id="oracleDataSource" class="...XxxDataSource">...</bean>
+            <bean id="mysqlDataSource" class="...YyyDataSource">...</bean>
+            ```
+            
+        - @Qualifier라는 빈 선정을 도와주는 부가 정보를 이용하는 것이 좋음
+            
+            ```java
+            @Autowired
+            @Qualifier("mainDB")
+            DataSource dataSource;
+            ```
+            
+            ```xml
+            <bean id="oracleDataSource" class="XxxDataSource">
+                <qualifier value="mainDB">
+            </bean>
+            ```
+            
+            <aside>
+            💡 두 가지 설정이 완료되면 스프링은 DataSource 타입 중에서 <qualifier> 태그가 있고, 그 값이 mainDB인 것으로 “한정”해서 자동 와이어링을 시도함
+            
+            </aside>
+            
+        - @Component를 이용하는 경우 XML에서 빈을 만들지 않아도 됨
+            
+            ```java
+            @Component
+            @Qualifier("mainDB")
+            public class OracleDataSource{...}
+            ```
+            
+        - 커스텀 한정자 애노테이션을 만들어 좀 더 의미있게 만들 수 있음
+            
+            ```java
+            @Target({ElementType.FIELD, ElementType.PARAMETER})
+            @Retention(RetentionPolicy.RUNTIME)
+            @Qualifier
+            public @interface Database{
+                String value();
+            }
+            ```
+            
+            ```java
+            @Autowired
+            @Database("main")
+            DataSource dataSource;
+            ```
+            
+        - @Qualifier는 부여 대상이 필드, 수정자, 파라미터 뿐임
+        - 생성자와 일반 메소드의 경우 @Quaifier를 부여하는 것이 의미가 없음
+        - 각 파라미터 당 하나의 빈이 매핑되기 때문에 이때는 생성자나 메소드가 아니라 파라미터에 직접 부여해야 함
+            
+            ```java
+            @Autowired
+            public void config(@Qualifier("mainDB") DataSource dataSource, Printer printer{...})
+            ```
+            
+- @Autowired는 @Resource와 마찬가지로 일단 지정하면 반드시 DI 할 후보 빈이 존재해아 함
+- 만약 반드시가 아닌 선택적 DI를 원한다면 required 엘리먼트를 false로 선언하면 됨
+    
+    ```java
+    @Autowired(requried=false) Printer printer;
+    ```
+    
+
+1.2.17 애노테이션 : @Injection
+
+- @Autowired는 스프링 2.5부터 적용된 스프링 전용 애노테이션임
+- @Injection은 JavaEE 6의 표준 스펙인 JSR-330에 정의된 애노테이션임
+- @Autowired의 @Qualifier와 @Injection의 @Qualifier는 다름
+
+1.2.18 @Autowired와 getBean(), 스프링 테스트
