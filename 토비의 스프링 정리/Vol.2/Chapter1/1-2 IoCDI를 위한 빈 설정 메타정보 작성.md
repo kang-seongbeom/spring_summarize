@@ -8,7 +8,7 @@
 - 따라서 정보가 담긴 리소스의 종류와 작성 방식에 **독립적**임
 - `BeanDefinition` 생성기를 사용할 수만 있다면, 빈 설정 메타정보를 담은 소스는 어떤 식으로 만들어도 상관 없음
     
-    ![KakaoTalk_20220301_195903580.jpg](1%202%20IoC%20DI%20413ed/KakaoTalk_20220301_195903580.jpg)
+    ![KakaoTalk_20220301_195903580.jpg](images/2/KakaoTalk_20220301_195903580.jpg)
     
 - `BeanDefinition`에는 IoC 컨테이너가 빈을 만들 때 필요한 **핵심 정보**가 담겨 있음
 - 몇 가지 필수 항목을 제외하면 컨테이너에 미리 설정된 **디폴트 값**이 그대로 적용됨
@@ -23,7 +23,7 @@
 - 핵심 항목 몇 가지만 살펴볼 것임
     - 빈 메타정보 : `BeanDefinition`의 핵심 항목
         
-        ![캡처.PNG](1%202%20IoC%20DI%20413ed/%EC%BA%A1%EC%B2%98.png)
+        ![캡처.PNG](images/2/%EC%BA%A1%EC%B2%98.png)
         
 - 스프링의 IoC/DI 기술은 단순하게 클래스로 오브젝트를 만들고 프로퍼티 설정하는 것이 전부가 아님
 - 스프링은 오브젝트를 컨테이너가 생성하고 관리하는 과정에서 필요한 매우 세밀하고 유연한 방법을 제공함
@@ -348,7 +348,7 @@
         - 빈 스캐닝은 애플리케이션 별로 각각 진행되는 작업임
         - XML이라면 알아서 각각 컨텍스트에 속한 빈을 등록하면 되겠지만, **빈 스캐닝**은 한 번에 **최상위 패키지를 지정**해서 하는 것이니 자칫하면 양쪽 컨텍스트의 빈 스캐너가 같은 클래스를 **중복해서 빈으로 등록**해버릴 수 있음
             
-            ![KakaoTalk_20220302_150341937.jpg](1%202%20IoC%20DI%20413ed/KakaoTalk_20220302_150341937.jpg)
+            ![KakaoTalk_20220302_150341937.jpg](images/2/KakaoTalk_20220302_150341937.jpg)
             
         - 위 그림의 `UserService`는 **루트 컨텍스트**에서 **트랜잭션**이 적용된 채로 사용돼야 함
         - 컨텍스트 계층구조에서 빈을 찾을 때는 자신의 컨텍스트를 먼저 검색하고, 없을 때만 부모 컨텍스트를 찾음
@@ -750,4 +750,513 @@
 - @Injection은 JavaEE 6의 표준 스펙인 JSR-330에 정의된 애노테이션임
 - @Autowired의 @Qualifier와 @Injection의 @Qualifier는 다름
 
-1.2.18 @Autowired와 getBean(), 스프링 테스트
+1.2.18 @Autowired와 getBean()
+
+- @Autowired는 가장 유연하면서 가장 강력한 기능을 가진 의존관계 설정 방법임
+- 같은 타입이 여러개 존재해서 @Qualifier를 쓰거나 어쩔 수 없이 @Resource를 사용해야 하지만, 대개 클래스나 인터페이스당 하나의 빈이 등록되므로 @Autowired만으로 충분함
+- getBean()은 기본적으로 Object 타입을 반환함
+- 때문에, 제네릭 메소드를 이용해 타입 파라미터를 주는 방법을 선호함
+    
+    ```java
+    Printer printer = ac.getBean("myprinter", Printer.class);
+    ```
+    
+- 특정 타입의 빈이 **하나만 존재**한다면, @Autowired처림 이름 대신 **타입**을 이용해 빈을 찾을 수 있음
+    
+    ```java
+    Printer printer = ac.getBean(Printer.class);
+    ```
+    
+    <aside>
+    💡 같은 타입의 빈이 여러개면 에러 발생
+    
+    </aside>
+    
+
+1.2.19 스프링 테스트
+
+- 테스트를 위해 매번 빈 클래스를 만들고 XML을 만들거나 빈 스캐닝을 위해 별도의 패키지를 구성하는 작업은 번거로움
+- 그래서 테스트 클래스 안에 스태틱 멤버 클래스로 애노테이션이 달린 클래스를 등록하고 이를 XML 없이 **직접 컨텍스트 빈으로 등록**해서 사용하는 방법이 유용함
+    
+    ```java
+    @Test
+    public void simpleAtAutowired(){
+        //빈 클래스를 직접 지정
+        AbstractApplicationContext ac = 
+            new AnnotationConfigApplicationContext(BeanA.class, BeanB.class);
+        BeanA beanA = ac.getBean(BeanA.class)
+        assertThat(beanA.beanB, is(notNullValue()));
+    }
+    
+    //빈 스캔을 할 것이 아니기 때문에 @Component는 필요 없음
+    //빈 이름을 지정할 필요가 있으면 @Component("beanName") 또는 @Named("beanName")을 붙이면 됨
+    private static class BeanA{
+        @Autowired BeanB beanB;
+    }
+    private static class BeanB{}
+    ```
+    
+
+1.2.20 자바 코드에 의한 의존관계 설정
+
+- @Configuration과 @Bean을 잉요해서 자바 코드로 빈을 등록하는 경우에 빈의 의존관계를 설정하는 방법임
+- **세 가지** 방법이 있음
+    1. 애노테이션에 의한 설정 @Autowired, @Resource
+        - 빈의 오브젝트만 생성해서 등록하면 의존관계는 설정용 후처리기에 의해 별도로 설정될 것임
+            
+            ```java
+            @Configration
+            public class Hello {
+                @Bean public Hello hello(){ return new Hello(); }
+                @Bean public Printer printer(){ return new Printer(); }
+            }
+            ```
+            
+        - @Autowired와 같은 **애노테이션** 의존관계 설정은 빈 오브젝트 등록을 마친 후에 **후처리기**에 의해 별도의 작업으로 진행됨
+            
+            ```java
+            public class Hello{
+                @Autowired Printer printer;
+            ```
+            
+        - 때문에, 의존관계 설정을 XML이나 다른 방법을 사용할 수 있음
+    2. @Bean 메소드 호출
+        - 메소드로 정의된 다른 빈을 **메소드 호출**을 통해 **참조**하는 것임
+        - @Bean이 붙은 메소드 자체가 하나의 빈 이름처럼 사용 됨
+            
+            ```java
+            @Configration
+            public class Config {
+                @Bean public Hello hello(){ 
+                    Hello hello = new Hello();
+                    hello.setPrinter(printer());
+                    return hello
+                }
+            
+                @Bean public Printer printer(){ return new Printer(); }
+            }
+            ```
+            
+        - 일종의 수동 DI 방식임
+        - 이 방법은 자바 코드로 DI 하는 가장 **직관적인 방법**임
+        - **싱글톤**으로 만들어지기 때문에 한 개의 오브젝트가 반복적으로 사용 됨
+        - @Configration이 붙지 않으면 싱글톤으로 만들어지지 않기 때문에 주의해야 함
+    3. @Bean과 메소드 자동와이어링
+        - 직접 빈 메소드를 호출하지 않고, 빈의 **레퍼런스**를 **파라미터**로 주입받는 방식을 사용함
+            
+            ```java
+            @Configration
+            public class Config {
+                @Bean public Hello hello(Printer printer){ 
+                    Hello hello = new Hello();
+                    hello.setPrinter(printer);
+                    return hello
+                }
+            
+                @Bean public Printer printer(){ return new Printer(); }
+            }
+            ```
+            
+        - @Bean이 붙은 자바 코드에 의한 설정용 메소드에 애노테이션을 이용한 의존관계 설정 기법을 적용한 것임
+        - 빈에 적용되는 DI가 아니라 빈 설정정보로서의 메소드에 의해 적용되는 DI임
+        - 설정 메타정보가 자바 오브젝트이므로 DI 대상에 포함되도록 만든 것임
+        - @Configuration이 붙은 Config도 하나의 빈이고 @Bean이 @Autowired를 포함하고 있다고 생각하면 이해하기 쉬움
+        - 이 방식의 장점은 다른 빈의 레퍼런스를 메소드 호출이 아니라 **파라미터**로 받기 때문에, @Bean 메소드 호출을 이용했을 때 보다 자바 코드가 자연스럽다는 것임
+        - 이 방법은 일반 @Autowired와 마찬가지로 @Qualifier를 파라미터에 추가할 수 있음
+        - 또, 한 개 이상의 파라미터를 사용할 수 있음
+        - Config 클래스 내의 여러 @Bean 메소드에서 참조되는 빈 오브젝트라면 , **클래스 레벨**의 DI를 통해 가져와도 됨
+    
+
+1.2.21 빈 의존관계 설정 전략
+
+- 빈 등록 방법도 여러가지이지만 빈 의존관계 설정은 그보다 더 다양함
+- 어떤 방식을 사용할지는 전적으로 개발자의 자유임
+- 정책 또는 가이드라인을 잘 만들어두는게 중요함
+- 자주 쓰이는 방법은 **세 가지**가 있음
+    1. XML 단독
+        - 빈 등록은 물론이고 의존관계 설정까지 모두 XML만으로 구성하는 방법임
+        - XML을 사용하다 하더라도 모든 정보를 명시적으로 선언하지 않아도 됨
+        - 자동와이어링을 사용하는 것이 좋음
+        - XML의 자동와이어링은 **이름**에 의한 방식이 좋음
+        - 타입에 의한 방식은 @Autowired 애노테이션을 이용하는 세밀한 방식과는 달리 불편하고 느림
+        - 가능하면 **엄격**하고 **일관성** 있는 **명명 규칙**을 클래스 이름과 빈 이름에 적용해야 함
+    2. XML과 애노테이션 설정의 혼합
+        - 빈은 XML로 등록하지만 의존관계 정보는 @Autowired나 @Resource 같은 애노테이션을 이용하는 방법도 자주 사용됨
+    3. 애노테이션 단독
+        - 빈의 등록도 @Component 애노테이션을 이용해 **스캐너**에게 맡기고, 의존관계 역시 @Autowired와 같은 **애노테이션**을 이용해 자동으로 등록하는 방법임
+        - XML이 하나도 없는 순수한 애노테이션만의 설정을 원한다면 일부 기술 서비스 빈은 @Configration 자바 코드를 이용해 등록해줘야 함
+    
+
+1.2.22 프로퍼티 값 설정 방법
+
+- DI를 통해 빈에 주입되는 것은 **두 가지**임
+    1. 레퍼런스
+    2. 단순 값
+- 사실 스프링에서 말하는 **값**이란, 스프링이 관리하는 빈이 아닌 모든 것을 말함
+- 따라서 복잡한 오브젝트도 설정 메타정보에 의해 **런타임** 시 빈에 **주입**된다면 역시 값이라 할 수 있음
+- 보통 **싱글톤**은 **동시성** 문제 때문에 필드 값을 함부로 수정하지 않음
+- 싱글톤을 상태가 없는 방식으로 만들기 때문에 필드에 있는 값은 **읽기전용**인 경우가 대부분임
+- 값 주입 방법 **세 가지**가 있음
+    1. XML : <proeprty>와 전용 태그
+        - <property>는 ref 애트리뷰트를 이용해 다른 빈의 아이디를 지정함
+        - 만약 ref 대신 value 애트리뷰트를 사용한다면 런타임 시에 주입할 값으로 인식함
+            
+            ```java
+            <bean id="hello">
+                <!--public setName(String name)메소드를 호출래서 값을 주입 함-->
+                <property name="name" value="Everyone">
+            </bean>
+            ```
+            
+        - XML의 value 애트리뷰트 값이 스트링이기 때문에, 다른 타입이면 적절한 변환이 필요함
+    2. 애노테이션 : @Value
+        - 코드와 외부 설정을 분리해서 얻을 수 있는 가장 큰 장점은 설정이 바뀌더라도 소스코드를 다시 컴파일하지 않아도 된다는 점임
+        - 특히 값의 경우 빈의 의존관계와는 달리 자동와이어링 같은 방법이 없기 때문에 항상 **명시적**으로 지정해야 함
+        - 따라서 값을 넣을 때는 XML과 같은 외부 설정 리소스를 사용하는 것이 마땅함
+        - 소스코드의 @Value 애노테이션을 이용해 프로퍼티 값을 지정할 수 있음
+            
+            ```java
+            public class Hello{
+                private String name;
+                @Value("Everyone")
+                public void setName(String name){
+                    this.name=name;
+                }
+            }
+            ```
+            
+        - @Value는 직접 필드 값을 초기화 할 때와 분명한 차이가 있음
+        - @Value 애노테이션은 스프링 컨테이너가 **참조**하는 정보이지, 그 자체로 클래스의 필드에 값을 넣어주는 기능은 아님
+        - 따라서 테스트 코드와 같이 컨테이너 밖에서 사용된다면 @Value 애노테이션은 무시됨
+        - XML과 같이 외부로 분리하는 방법에 비해 @Value에 직접 값을 지정하는 방법은 잘 사용되지 않음
+        - 환경정보나 프로퍼티 파일에서 값을 가져오는 방법을 많이 사용함
+        - 프로퍼티 파일을 만들고 해당 값을 가져오는 방법을 많이 사용함
+            
+            ```java
+            @Value("${database.username}")
+            String username;
+            ```
+            
+            ```java
+            <context:property-placeholder location="classpath:database.properties"/>
+            ```
+            
+            <aside>
+            💡 XML에 프로퍼티 파일을 지정해야 함
+            
+            </aside>
+            
+    3. 자바 코드 : @Value
+        - @Configuration과 @Bean을 사용하는 경우에도 프로퍼티 값을 외부로 독립시킬 수 있음
+        - 클래스 자체가 메타정보이기 때문에, 설정을 변경해야 할 때마다 코드를 수정하고 재컴파일하는 게 문제가 되지 않음
+        - 하지만, 프로퍼티 파일에서 가져오는 것이 바람직함
+        - 자바 코드에 의한 설정에서도 @Autowired를 활용했던 것 처럼 @Value도 사용 가능 함
+            
+            ```java
+            @Configuration
+            public class Config{
+                @Value("${database.usernmae}")
+                private String name;
+                @Bean public Hello hello(){
+                    Hello hello = new Hello();
+                    hello.setName(this.name);
+                    return hello;
+                }
+            }
+            ```
+            
+        - 또는 @Bean 메소드의 파라미터에 @Value를 직접 사용할 수 있음
+            
+            ```java
+            @Bean public Hello hello(Value("${database.username}") String name){
+                Hello hello = new Hello();
+                hello.setName(this.name);
+               return hello;
+            }
+            ```
+            
+- 메타정보 종류에 따른 값 설정 방법은 **네 가지**가 있음
+    1. PropertyEditor와 ConversionService
+        - 프로퍼티 타입이 String이면 아무런 문제가 없지만, 그 외의 타입인 경우라면 타입을 변경하는 과정이 필요함
+        - 스프링은 두 가지 동류의 타입 변환 서비스를 제공함
+            1. PropertyEditor
+                - `PropertyEditor`는 디폴트로 사용되는 타입 변환기임
+                - 기본타입
+                    - 스프링의 내장 프로퍼티 에디터는 **열 아홉**가지의 **기본 타입 변환**을 지원함
+                        
+                        <aside>
+                        💡 boolean, Boolean, byte, Byte, short, Short, int, Interger, long, Long, float, Float, double, Double, BigDecimal, BigInteger, char, Character, String
+                        
+                        </aside>
+                        
+                    - XML 선언
+                        
+                        ```xml
+                        <property name="flag" value="true"> <!--boolean flag-->
+                        ```
+                        
+                    - 애노테이션 선언
+                        
+                        ```java
+                        @Value("1.2") double rate;
+                        ```
+                        
+                        <aside>
+                        💡 항상 문자열로 만들어 넣어야 함
+                        
+                        </aside>
+                        
+                - 배열
+                    - 기본 타입의 배열로 선언된 프로퍼티에는 한 번에 배열의 값을 주입할 수 있음
+                    - 값을 **콤마**로 구분해서 넣으면 됨
+                        
+                        ```java
+                        @Value("1,2,3,4") int[] intarr;
+                        ```
+                        
+                - 기타
+                    - 스프링은 기본 타입 외에도 타입 변환을 지원함
+                    - 보통 설정을 통해 외부에서 지정하는 방법으로 사용할 가능성이 많은 타입임
+                    - 기본 타입과 달리 각 타입을 문자열로 표현하는 포맷을 알고 있어야 함
+                        
+                        <aside>
+                        💡 Charset, Class, Current, File, InputStream, Locale, Pattern, Resource, Timezone, URI, URL
+                        
+                        </aside>
+                        
+                    - 각 타입의 프로퍼티 에디터를 찾는 방법은 타입 이름 뒤에 Editor을 붙이면 됨
+            2. ConversionService
+                - `ConversionService`는 스프링이 직접 제공하는 타입 변환 API임
+                - 멀티스레드 환경에서 공유해 사용될 수 있음
+                - 선언 방법
+                    
+                    ```xml
+                    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+                        <property name="convertes">
+                            <list>
+                                <!--직접 정의한 타입 변환기를 등록할 수 있음. 
+                                    기본적으로 등록된 변환 타입에 추가돼서 value, @Value의 값을 변환하는 데 사용됨-->
+                                <bean class="com.ksb.converter.MyTypeConverter">
+                            </list>
+                        </property>
+                    </bean>
+                    ```
+                    
+    2. 컬렉션
+        - 자바의 Collection 타입의 값을 지정하는 방법
+        - value 애트리뷰트를 통해 스프링 값을 넣지 않음
+        - 컬렉션 선언용 태그를 사용해야 함
+        - 이때는 <property>의 value 애트리뷰트가 생략됨
+            
+            ```xml
+            <!--List, Set-->
+            <property name="names">
+                <list> <!--Set일 경우 list 대신 set-->
+                    <value>Spring</value>
+                    <value>IoC</value>
+                </list>
+            </property>
+            
+            <!--Map-->
+            <property name="ages">
+                <map>
+                    <entry key="k" value="10" />
+                    <entry key="s" value="20" />
+                </map>
+            </property>
+            
+            <!--Properties-->
+            <property name="names">
+                <props>
+                    <prop key="username">Spring</prop>
+                    <prop key="password">Book</prop>
+                </props>
+            </property>
+            
+            <!--레퍼런스에 대한 컬렉션--> 
+            <property name="beans">
+                <list>
+                    <ref bean="beanA" />
+                    <ref bean="beanB" />
+                </list>
+            ```
+            
+        - 컬렉션을 값으로 선언하는 대신 **독립적인 빈**으로 만드는 방법 util 전용 태그 활용
+            
+            ```xml
+            <util:list id="names">
+                <value>Spring</value>
+                <value>IoC</value>
+            </util:list>
+            
+            <!--List 구현 클래스 직접 지정-->
+            <!--Set은 <util:set>을 이용-->
+            <util:list id="names" list-class="java.util.LinkedList" >
+            
+            <!--<util:map>-->
+            <util:map name="ages">
+                <map>
+                    <entry key="k" value="10" />
+                    <entry key="s" value="20" />
+                </map>
+            </util:map>
+            
+            <!--Properties-->
+            <util:properties name="names">
+                <props>
+                    <prop key="username">Spring</prop>
+                    <prop key="password">Book</prop>
+                </props>
+            </util:properties>
+            
+            <!--Properties는 XML에 직접 내용을 등록하느 ㄴ대신 외부 프로퍼티 파일을 지정해 사용할 수 있음-->
+            <util:properties id="settings" location="classpath:settings.properties" />
+            ```
+            
+    3. Null과 빈 문자열
+        - null과 빈 문자열이 비슷한 용도로 사용되기는 하지만 동일하지 않기 때문에 구분해서 사용해야 함
+        - 빈문자열
+            
+            ```xml
+            <property name="name" value=""/>
+            ```
+            
+        - null
+            
+            ```xml
+            <property name="name"><null/></property>
+            ```
+            
+    4. 프로퍼티 파일을 이용한 값 설정
+        - 스프링 애플리케이션은 기본적으로 POJO 클래스와 설정정보로 구성됨
+        - XML로 분리해두면 빈 클래스나 의존관계 정보를 소스코드 수정 없이도 간단히 조작할 수 있음
+        - XML에는 빈의 정의와 의존관계뿐 아니라 빈이 필요로 하는 각종 설정 정보를 프로퍼티 값으로 지정할 수 있음
+        - 환경에 따라 자주 변경될 수 있는 내용은 프로퍼티 파일로 분리해서 사용하는 것이 좋음
+        - 또, 프로퍼티 파일에서 설정 값을 분리하면 @Value를 효과적으로 사용할 수 있음
+        - 별도의 프로퍼티 파일로 분리한 정보를 사용할 수 있는 방법은 **두 가지**가 있음
+            1. 수동 변환 : PropertyPlaceHolderConfigurer
+                - 프로퍼치 치환자(Placeholder)를 이용하는 방법임
+                - 프로퍼티 치환자는 프로퍼티 파일의 키 값을 ${} 안에 넣어서 만듦
+                    
+                    ```xml
+                    <property name="url" value="${db.url}">
+                    ```
+                    
+                - 프로퍼티 치환자를 사용하려면, **전용 태그**로 프로퍼티 **파일 위치**를 지정해야 함
+                    
+                    ```xml
+                    <context:proeprty-placeholder location="classpath:database.properties"/>
+                    ```
+                    
+                - 스프링 컨테이너는 초기화 작업 중에 프로퍼티 파일을 읽어 각 키에 ${}을 붙인 값과 동일한 value 선언을 찾고 바꿔치기 함
+                - 바꿔치기는 <context:proeprty-placeholder> 태그에 자동으로 등록되는 `PropertyPlaceHolderConfigurer` 빈이 담당함
+                - 이 빈은 **빈 팩토리 후처리기**임
+                - 빈 팩토리 후처리기는 빈 후처리기와 비슷하지만 동작하는 **시점**과 다루는 **대상**이 다름
+                - **빈 후처리기**는 빈 오브젝트가 만들어진 직후에 오브젝트 **내용**이나 오브젝트 **자체**를 **변경**할 때 사용 됨
+                - 반면에 **빈 팩토리 후처리기**는 빈 설정의 **메타정보**가 모두 준비됐을 때 빈 메타정보 자체를 **조작**하기 위해 사용됨
+                - `PropertyPlaceHolderConfigurer`는 프로퍼티 파일을 읽은 뒤에, 프로퍼티 값 정보에서 ${}으로 둘러쌓인 치환자를 찾고 내용을 변경함
+                - 대체할 위치를 치환자로 지정해두고 별도의 후처리기가 치환자 값을 변경해주길 기대하기 때문에 **수동적**임
+            2. 능동 변환 : SpEL
+                - 빈 오브젝트에 직접 접근할 수 있는 표현식을 이용해 원하는 프로퍼티 값을 능동적으로 가져오는 방법임
+                - #{} 안에 표현식을 넣으면 됨
+                    
+                    ```xml
+                    <property name="helloname" value="#{hello.name}" />
+                    ```
+                    
+                - SpEL는 <util:properties> 태그를 이용하면 프로퍼티 파일을 읽어서 Properties 타입의 빈으로 만들 수 있음
+                - 파일을 읽어 Properies 안에 내용을 담아 빈으로 생성해줌
+                    
+                    ```xml
+                    <util:properties id="dbprops" location="classpath:database.properties" />
+                    ```
+                    
+                    <aside>
+                    💡 <util:properties>는 <context:property-placeholder>와 달리 단순히 프로퍼티 파일의 내용르 담은 Properties 타입 빈을 만들어 줄 뿐임
+                    
+                    </aside>
+                    
+                - Properties는 Map 인터페이스를 구현한 클래스이기 때문에 키로 값을 찾을 수 있음
+                    
+                    ```xml
+                    <property name="url" value="#{dbprops['db.url']}">
+                    ```
+                    
+                - SpEL을 이용한 방법은 @Value에도 적용 가능함
+        
+
+1.2.23 컨테이너가 자동등록하는 빈
+
+- 스프링은 초기화 과정에서 몇 가지 빈을 기본적으로 등록함
+    1. ApplicationContext, BeanFactory
+        - 스프링 컨테이너인 애플리케이션 컨텍스트는 `ApplicationContext` 인터페이스를 구현한 것임
+        - 컨텍스트 자신은 이름을 가진 빈으로 등록되어있지 않기 때문에, **타입**으로 접근해야 함
+            
+            ```java
+            @Autowired ApplicationContext context;
+            ```
+            
+        - 만약 애노테이션을 이용한 의존관계 설정을 사용하지 않는다면 `ApplicationContextAware` 인터페이스를 구현하면 됨
+        - `ApplicationContextAware` 내부의 setApplicationContext()에 애플리케이션 컨텍스트를 DI하면 됨
+        - `ApplicationContext`는 `BeanFactory`를 상속하고 있음
+        - getBean()은 `BeanFactory` 인터페이스에 정의된 것임
+        - `ApplicationContext`구현 클래스는 내부적으로 `BeanFactory`의 기능을 직접 구현하지 않고, **빈 팩토리 오브젝트**를 별도로 만들어서 위임하는 방식을 사용함
+        - 컨텍스트 내부에 만들어진 빈 팩토리 오브젝트를 직접 사용하고 싶으면, `BeanFactory` 타입으로 DI해줄 필요가 있음
+        - 이때 애플리케이션 컨텍스트 내부에서 생성한 `DefaultListableBeanFactory` 오브젝트로 캐스팅해서, 해당 오브젝트의 기능을 사용하고 싶을 때임
+        - `ApplicationContext` 구현 클래스 내부에 빈팩토리를 따로 생성하기 때문에, `BeanFactory`로 DI 받는 오브젝트는 `ApplicationContext`로 가져오는 오브젝트와 다름
+            
+            ```java
+            @Autowired BeanFactory beanFactory;
+            ```
+            
+        - BeanFactory를 애노테이션 없이 가져오려면 `BeanFactoryAware`을 구현하면 됨
+        - 애플리케이션 컨텍스트 사용은 권장되지 않지만, 스프링 기반으로 애플리케이션 프레임워크를 개발한다면 많이 사용됨
+    2. ResourceLoader, ApplicationEventPublisher
+        - 스프링 컨테이너는 `ReasourceLoader`이기도 함
+        - 따라서 다양한 서버환경에서 Resource를 로딩할 수 있는 기능을 제공함
+        - 만약 코드를 통해 서블릿 컨텍스트의 리소스를 읽어오고 싶다면 컨테이너를 `ResourceLaoder` 타입으로 DI 받아 활용하며 됨
+        - 웹 애플리케이션으로 배포된 스프링은 시본적으로 서블릿 컨텍스트의 리소스를 이용할 수 있도록 `ResourceLoader`가 구성됨
+        - `ApplicationContext` 인터페이스는 이미 `ResourceLaoder`를 상속하고 있음
+        - 따라서 `ApplicationContext` 타입으로 DI 받아 getResource()를 사용해도 되지만, 용도에 맞게 적절한 인터페이스 타입으로 DI 받는것이 바람직함
+            
+            ```java
+            @Autowired ResourceLoader resourceLoader;
+            ```
+            
+        - `ApplicationEventPublisher`는 `ApplicationListener` 인터페이스를 구현한 빈에게 이벤트를 발생시킬 수 있는 publicEvent() 메소드를 가진 인터페이스임
+        - 스프링 컨테이너는 빈 사이에 이벤트를 발생시키고 이를 전달받을 수 있는 기능이 포함되어 있지만 거의 사용되지 않음
+        - 빈 사이의 독자적인 이벤트/리스너 구성을 하면 충분하기 때문에 컨테이너 의존적인 방식을 이용할 필요는 없음
+    3. systemProperties, systemEnviroment
+        - systemProperties와 systemEnviroment는 스프링 컨테이너가 직접 등록하는 빈 중에서 타입이 아니라 **이름**을 통해 접근할 수 있는 두 가지 빈임
+            1. systemProperties
+                - Properties 타입임
+                - systemProperties는 Properties 타입의 오브젝트를 **읽기전용**으로 접근할 수 있게 만든 빈 오브젝트임
+                - JVM이 생성해주는 시스템 프로퍼티 값을 익을 수 있게 함
+                - 스프링 빈 프로퍼티에 시스템 프로퍼티 값을 넣어줄 때 이용하면 편리함
+                    
+                    ```java
+                    @Resource Properties systemProperties;
+                    ```
+                    
+                - @Resource보다 SpEL를 사용하는 것이 훨씬 간편함
+                - Properties는 Map 탕비이므로 [] 연산자를 사용해 접근 할 수 있음
+                    
+                    ```java
+                    @Value("#{systemProperties['os.name']}") String osName;
+                    ```
+                    
+            2. systemEnviroment
+                - Map 타입임
+                - systemEnviroment는 System.getenv()에서 제공하는 환경변수가 담긴 Map 오브젝트임
+                - 역시 SpEL을 이용하면 좋음
+                    
+                    ```java
+                    @Value("#{systemEnvironment['Path]}") String path;
+                    ```
+                    
+                - 프로퍼티와 달리 환경변수의 이름은 OS의 종류나 서버환경 설정에서 따라 달라질 수 있기 때문에 서버환경이 바뀌면 주의해야 함
+        
+        <aside>
+        💡 각각 Properties 타입과 Map 타입이기 때문에 타입을 통한 접근 방법은 적절하지 못함
+        
+        </aside>
