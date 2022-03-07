@@ -1,37 +1,41 @@
-PointCutTest.java
- PointCutTest
-EmbeddedDbTest.java
- EmbeddedDbTest
-UserTest.java
- UserTest
-OxmTest.java
- OxmTest
-ReflectionTest.java
- ReflectionTest
-DynamicProxyTest.java
- DynamicProxyTest
- DynamicProxyTest$1
- DynamicProxyTest$1$1
- DynamicProxyTest$1HelloToby
- DynamicProxyTest$1HelloWorld
- DynamicProxyTest$UppercaseAdvice
-FactoryBeanTest.java
- FactoryBeanTest
-JaxbTest.java
- JaxbTest
-EmbeddedDbSqlRegistryTest.java
- EmbeddedDbSqlRegistryTest
-JUnitTest.java
- JUnitTest
-ConcurrentHashMapSqlRegistryTest.java
- ConcurrentHashMapSqlRegistryTest
-UserDaoTestJdbc.java
- UserDaoTestJdbc
-CalcSumTest.java
- CalcSumTest
-AbstractUpdateSqlRegistryTest.java
- AbstractUpdateSqlRegistryTest
-UserDaoTest.java
- UserDaoTest
-UserServiceTest.java
- UserServiceTest
+vol1/UserTest.java
+ vol1.UserTest
+vol2/ScopeTest.java
+ vol2.ScopeTest
+ vol2.ScopeTest$PrototypeBean
+ vol2.ScopeTest$PrototypeClientBean
+vol1/JaxbTest.java
+ vol1.JaxbTest
+vol1/CalcSumTest.java
+ vol1.CalcSumTest
+vol1/OxmTest.java
+ vol1.OxmTest
+vol1/EmbeddedDbTest.java
+ vol1.EmbeddedDbTest
+vol1/ReflectionTest.java
+ vol1.ReflectionTest
+vol1/EmbeddedDbSqlRegistryTest.java
+ vol1.EmbeddedDbSqlRegistryTest
+vol1/FactoryBeanTest.java
+ vol1.FactoryBeanTest
+vol1/ConcurrentHashMapSqlRegistryTest.java
+ vol1.ConcurrentHashMapSqlRegistryTest
+vol1/UserServiceTest.java
+ vol1.UserServiceTest
+vol1/AbstractUpdateSqlRegistryTest.java
+ vol1.AbstractUpdateSqlRegistryTest
+vol1/DynamicProxyTest.java
+ vol1.DynamicProxyTest
+ vol1.DynamicProxyTest$1
+ vol1.DynamicProxyTest$1$1
+ vol1.DynamicProxyTest$1HelloToby
+ vol1.DynamicProxyTest$1HelloWorld
+ vol1.DynamicProxyTest$UppercaseAdvice
+vol1/JUnitTest.java
+ vol1.JUnitTest
+vol1/PointCutTest.java
+ vol1.PointCutTest
+vol1/UserDaoTest.java
+ vol1.UserDaoTest
+vol1/UserDaoTestJdbc.java
+ vol1.UserDaoTestJdbc
